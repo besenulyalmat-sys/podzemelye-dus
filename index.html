@@ -487,7 +487,7 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
   #topbar .chip.icon{width:34px;height:34px;padding:0;display:grid;place-items:center;font-size:.95rem}
   #evchip{max-width:46vw}
   #wchip{max-width:34vw}
-  #dock{padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));max-height:58vh;max-height:min(62dvh,560px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+  #dock{padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));max-height:50vh;max-height:min(52dvh,460px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
   #bar{position:sticky;bottom:0;z-index:2;padding:6px 0 3px;background:linear-gradient(180deg,rgba(22,17,43,.7),var(--panel) 38%)}
   #strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;overflow:hidden;padding-bottom:4px}
   .pchip{min-width:0;padding:3px 6px 3px 3px;border-radius:10px}
@@ -505,6 +505,22 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
   .talkbtn{width:40px;height:40px;font-size:1.15rem;opacity:.9}
   .fitem{font-size:.82rem;padding:7px 9px}
 }
+#zpeek{position:fixed;left:10px;right:10px;bottom:calc(var(--dockh,240px) + 8px);z-index:34;max-width:560px;margin:0 auto;padding:10px 12px;background:rgba(18,13,34,.97);border:1px solid rgba(243,221,160,.52);border-radius:16px;box-shadow:0 8px 28px rgba(0,0,0,.55);color:var(--ink);display:grid;gap:6px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+#zpeek[hidden]{display:none!important}
+#zpeek b{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.04rem;color:var(--gold2)}
+#zpeek span{font-size:.84rem;line-height:1.35;color:var(--ink)}
+#zpeek small{font-size:.76rem;color:var(--ink2)}
+#zpeek .zpeek-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:2px}
+#zpeek .zpeek-actions button{min-height:42px}
+.zov.zpeek-preview{z-index:5;outline:2px solid rgba(255,255,255,.88);outline-offset:-3px;opacity:.88;animation:zpeekPulse 1.2s ease-in-out infinite alternate}
+.zov.zpeek-random{opacity:.38!important;outline:1px dashed rgba(255,255,255,.9);outline-offset:-2px;animation:none!important;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.35) 0 2px,transparent 2px 7px)!important}
+.zov.zpeek-preview i{font-size:calc(var(--cs) * .42);text-shadow:0 0 8px #000,0 0 12px var(--zc)}
+.token.zpeek-target{outline:3px dashed rgba(255,255,255,.94);outline-offset:3px;filter:brightness(1.22)}
+.zov .zleft{position:absolute;right:2px;bottom:1px;padding:0 3px;border-radius:6px;background:rgba(8,6,16,.88);color:#fff;font:700 9px/1.35 system-ui,sans-serif;text-shadow:0 1px 3px #000}
+@keyframes zpeekPulse{from{filter:brightness(.9)}to{filter:brightness(1.45)}}
+@media (min-width:980px) and (min-height:560px){#zpeek{left:16px;right:406px;bottom:16px;max-width:none;margin:0 auto}}
+@media (max-width:979px),(max-height:559px){#zpeek{left:8px;right:8px;bottom:calc(var(--dockh,240px) + 8px);padding:9px 10px}#zpeek span{font-size:.8rem}#zpeek .zpeek-actions button{flex:1}}
+@media (prefers-reduced-motion:reduce){.zov.zpeek-preview{animation:none;filter:none}}
 </style>
 </head>
 <body>
@@ -591,6 +607,7 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 </div>
 <canvas id="fxc"></canvas>
 <div id="stage"></div>
+<div id="zpeek" role="region" aria-label="Предпросмотр территориальной способности" hidden aria-live="polite"></div>
 <div id="feed" aria-live="polite"></div>
 <div id="ov"></div>
 <div class="sumov" id="sumov"></div>
@@ -4131,10 +4148,72 @@ function renderMarks() {
     t.firstChild.appendChild(h('span', { class: 'mark', style: '--pc:' + (o ? o.color : '#fff') }, mk.type === 'camp' ? '⛺' : mk.type === 'crystal' ? '💠' : '✶'));
   }
 }
+let ACTIVE_ZONE_PREVIEW = null;
+function zoneAccent(z, hero) {
+  const colors = { firewall:'#FF754F', firecircle:'#FF8A4D', iceWall:'#A8E8FF', crystalWall:'#B9A6FF', crystalArea:'#B9A6FF', rift:'#A77BFF', puddle:'#A77BFF', portal:'#72DFFF', reef:'#63D9EA', web:'#E5DFFF', webcover:'#E5DFFF', bloodtrap:'#F05E78', boneWall:'#C6A57A', thorns:'#FF86B6' };
+  return colors[z] || (HEROES[hero] ? heroColor(hero) : '#F3DDA0');
+}
+function previewZoneCells(s, center, Z) {
+  if (Z.shape !== 'scatter') return { cells: shapeCells(s, Z, center, () => 0.5), random: false, count: 0 };
+  const groups = Z.groups || [{ a: Z.a == null ? 0 : Z.a, b: Z.b == null ? 0 : Z.b, n: Z.n || 1 }];
+  const rc = rowOf(center), all = new Set();
+  groups.forEach(g => {
+    for (let r = rc + g.a; r <= rc + g.b; r++) if (r >= 0 && r < ROWS)
+      for (let c = 0; c < COLS; c++) { const i = cellAt(r, c); if (i !== center && i > 0 && i < CELLS - 1) all.add(i); }
+  });
+  const cells = [...all].sort((a, b) => a - b);
+  const count = Math.min(cells.length, groups.reduce((n, g) => n + (g.n || Z.n || 1), 0));
+  return { cells, random: true, count };
+}
+function clearZonePreview() {
+  if (!ACTIVE_ZONE_PREVIEW) return;
+  document.querySelectorAll('.zpeek-preview').forEach(x => x.remove());
+  Object.values(MAP.toks).forEach(t => t.classList.remove('zpeek-target'));
+  const box = $('zpeek'); box.hidden = true; box.innerHTML = '';
+  ACTIVE_ZONE_PREVIEW = null;
+}
+function previewTerritory(p, hh, ab, base) {
+  const ops = (ab.ops || []).filter(o => o.op === 'zone');
+  if (!ops.length || !MAP.B) return false;
+  closeModal(); clearZonePreview();
+  const plans = ops.map(op => ({ op, ...previewZoneCells(G.s, p.pos, op) }));
+  ACTIVE_ZONE_PREVIEW = { base, hero: hh.k };
+  const marked = new Set();
+  plans.forEach(plan => {
+    const op = plan.op, vis = op.vis || ZVIS[op.z] || 'gen', color = zoneAccent(op.z, hh.k);
+    plan.cells.forEach(i => {
+      marked.add(i);
+      const tile = MAP.tiles[i]; if (!tile) return;
+      const random = plan.random ? ' zpeek-random' : '';
+      const icon = op.icon || (ZK[op.z] || {}).icon || '✦';
+      tile.firstChild.appendChild(h('span', { class: 'zov zpeek-preview v-' + vis + random, style: '--zc:' + color, 'aria-hidden': 'true' }, h('i', null, icon)));
+    });
+  });
+  G.s.players.forEach(q => { const token = MAP.toks[q.id]; if (token && marked.has(G.disp[q.id] ?? q.pos)) token.classList.add('zpeek-target'); });
+  const rows = plans.map(plan => {
+    const Z = plan.op, label = Z.name || (ZK[Z.z] || {}).name || 'Территория';
+    const cells = plan.random ? plan.count + ' случайных клеток среди ' + plan.cells.length + ' возможных' : plan.cells.length + ' клеток';
+    const duration = Z.left == null ? (ZK[Z.z] && ZK[Z.z].once ? ' · сработает один раз' : ' · останется на поле') : ' · ' + Z.left + ' круга';
+    return label + ': ' + cells + duration;
+  });
+  const box = $('zpeek'); box.innerHTML = '';
+  box.appendChild(h('b', null, 'Предпросмотр · ' + ab.name));
+  rows.forEach((line, i) => box.appendChild(h('span', null, line)));
+  if (plans.some(x => x.random)) box.appendChild(h('small', null, 'Штриховка показывает возможные клетки. Точные случайные клетки определятся при применении.'));
+  const actions = h('div', { class: 'zpeek-actions' });
+  actions.appendChild(h('button', { class: 'abtn alt', type: 'button', onclick: clearZonePreview }, 'Отмена'));
+  actions.appendChild(h('button', { class: 'abtn', type: 'button', onclick: () => { const act = ACTIVE_ZONE_PREVIEW && ACTIVE_ZONE_PREVIEW.base; clearZonePreview(); if (act) doAct(act); } }, 'Применить способность'));
+  box.appendChild(actions); box.hidden = false;
+  box.onkeydown = e => { if (e.key === 'Escape') { e.preventDefault(); clearZonePreview(); } };
+  const confirm = box.querySelector('.abtn:not(.alt)'); if (confirm) confirm.focus();
+  const focus = plans.flatMap(x => x.cells).sort((a, b) => Math.abs(a - p.pos) - Math.abs(b - p.pos))[0];
+  if (focus != null) focusCell(focus);
+  return true;
+}
 function renderZones() {
   if (!G.s) return;
   document.querySelectorAll('.zov').forEach(m => m.remove());
-  (G.s.zones || []).forEach(z => { const col = heroColor(z.hero); const K = ZK[z.z] || {}; z.cells.forEach(i => { const t = MAP.tiles[i]; if (!t) return; t.firstChild.appendChild(h('span', { class: 'zov v-' + (z.vis || ZVIS[z.z] || 'gen') + (K.big ? ' big' : ''), style: '--zc:' + col }, h('i', null, z.icon || K.icon || '·'))); }); });
+  (G.s.zones || []).forEach(z => { const owner = z.owner && G.s.players.find(p => p.id === z.owner); const col = owner ? owner.color : heroColor(z.hero); const K = ZK[z.z] || {}; const title = (owner ? owner.name + ' · ' : '') + (z.nm || K.name || 'Зона') + (z.left != null ? ' · ещё ' + z.left + ' круга' : ''); z.cells.forEach(i => { const t = MAP.tiles[i]; if (!t) return; t.firstChild.appendChild(h('span', { class: 'zov v-' + (z.vis || ZVIS[z.z] || 'gen') + (K.big ? ' big' : ''), style: '--zc:' + col, title, 'aria-hidden': 'true' }, h('i', null, z.icon || K.icon || '·'), z.left != null ? h('b', { class: 'zleft' }, String(z.left)) : null)); }); });
   const me = G.s.players.find(x => x.id === meId()); const dk = $('darkov'); if (dk) dk.classList.toggle('on', !!(me && me.st.dark > 0 && !me.place));
   if (G.s.blank) Object.keys(G.s.blank).forEach(i => { const t = MAP.tiles[i]; if (t) { t.className = 'tile empty'; const ic = t.firstChild.firstChild; if (ic && ic.nodeType === 3) ic.textContent = ''; } });
 }
@@ -4640,6 +4719,35 @@ function abilitySound(heroKey, ab) {
   const F = ab.face && HEROES[heroKey].faces ? HEROES[heroKey].faces.find(x => x.id === ab.face) : null;
   motifSnd(F ? F.motif : HEROES[heroKey].motif);
 }
+const ZONE_SFX_AT = {};
+const ZONE_AUDIO = {
+  fire: { motif:'fire', place:'burn' }, ice: { motif:'crystal', place:'glass' }, crystal: { motif:'crystal', place:'glass' },
+  void: { motif:'void', place:'gravity' }, portal: { motif:'void', place:'portal' }, water: { motif:'water', place:'shell' },
+  web: { motif:'smoke', place:'roots' }, petal: { motif:'petal', place:'bless' }, rock: { motif:'rock', place:'stone' },
+  star: { motif:'star', place:'seal' }, blood: { motif:'blood', place:'purge' }, amber: { motif:'water', place:'roots' }, light: { motif:'star', place:'grace' },
+  camp: { motif:'rock', place:'camp' }
+};
+function zoneSound(z, phase, hero) {
+  const vis = ZVIS[z] || 'gen', profile = ZONE_AUDIO[vis] || { motif: HEROES[hero] && HEROES[hero].motif || 'card', place: 'seal' };
+  const key = phase + ':' + vis, now = Date.now();
+  if (now - (ZONE_SFX_AT[key] || 0) < (phase === 'hit' ? 420 : 260)) return;
+  ZONE_SFX_AT[key] = now;
+  if (phase === 'hit') { motifSnd(profile.motif); return; }
+  const sfx = profile.place === 'glass' ? SFX.glass : profile.place === 'burn' ? SFX.ab.burn : profile.place === 'portal' ? SFX.portal : SFX.ab[profile.place];
+  (sfx || SFX.chime)(); motifSnd(profile.motif);
+}
+function zoneImpactFx(pt, z, hero, power = 1) {
+  if (!pt) return;
+  const vis = ZVIS[z] || 'gen', col = zoneAccent(z, hero), n = Math.round(14 * power);
+  if (vis === 'fire') { burst(pt, ['#FF7048', '#FFC36B', col], n, 5 * power, { shape:'ember', g:-0.05 }); ring(pt, '#FFC36B', 62 * power, 3, 34); }
+  else if (vis === 'ice') { burst(pt, [col, '#EAFBFF', '#FFFFFF'], n, 5 * power, { shape:'flake' }); ring(pt, '#DDF8FF', 64 * power, 3, 36); }
+  else if (vis === 'crystal') { burst(pt, [col, '#FFFFFF', '#D4EEFF'], n, 5 * power, { shape:'shard' }); ring(pt, col, 60 * power, 3, 34); }
+  else if (vis === 'void' || vis === 'portal') { ringIn(pt, col, 86 * power, 36); spiral(pt, [col, '#171022', '#FFFFFF'], Math.round(16 * power)); }
+  else if (vis === 'water') { motifFx(pt, col, 'water', n); ring(pt, '#E0FAFF', 58 * power, 2, 34); }
+  else if (vis === 'web') { ring(pt, col, 58 * power, 3, 38); burst(pt, [col, '#EDE7FF'], n, 3 * power, { shape:'shard' }); }
+  else if (vis === 'rock') { rocks(pt, n); ring(pt, col, 54 * power, 4, 36); }
+  else { motifFx(pt, col, vis, n); ring(pt, col, 58 * power, 3, 34); }
+}
 
 async function playFx(e, s) {
   const P = id => s.players.find(p => p.id === id);
@@ -4653,8 +4761,14 @@ async function playFx(e, s) {
     case 'meet': await showMeet(e, s); break;
     case 'meetHit': { const col = heroColor(e.foe); const pt = screenOfP(e.p); impact(pt, col, HEROES[e.foe].motif, e._me === false ? 0.5 : 0.85); motifFx(pt, col, HEROES[e.foe].motif, 18); await sleep(e._me === false ? 180 : 360); break; }
     case 'offer': { if (e._me === false) break; const b = bxOf(e.foe, e.ab); banner(e.foe, e.yes ? 'Согласие' : 'Отказ', HEROES[e.foe].name + ': «' + b.name + '»', heroColor(e.foe)); await sleep(900); break; }
-    case 'zone': { renderZones(); const col = heroColor(e.hero); const pts = (e.cells || []).slice(0, 14).map(screenOfCell).filter(Boolean); pts.forEach((pt, i) => setTimeout(() => ring(pt, col, 40, 3), i * 40)); SFX.chime(); await sleep(e._me === false ? 250 : 600); break; }
-    case 'zoneHit': { const col = heroColor(e.hero); const pt = screenOfP(e.p); impact(pt, col, HEROES[e.hero].motif, 0.6); motifFx(pt, col, HEROES[e.hero].motif, 16); floatAt(e.p, (ZK[e.z] || {}).icon || '!', col); await sleep(450); break; }
+    case 'zone': {
+      renderZones(); const col = zoneAccent(e.z, e.hero); const ids = (e.cells || []).slice(0, 28); const pts = ids.map(screenOfCell).filter(Boolean); const vis = ZVIS[e.z] || 'gen';
+      zoneSound(e.z, 'place', e.hero);
+      if (vis === 'void' || vis === 'portal') portalFx(screenOfP(e.owner), col, RM ? 26 : 52);
+      pts.forEach((pt, i) => setTimeout(() => zoneImpactFx(pt, e.z, e.hero, 0.52), RM ? 0 : i * 34));
+      await sleep(e._me === false ? 240 : Math.min(1250, 300 + pts.length * (RM ? 0 : 34))); break;
+    }
+    case 'zoneHit': { const col = zoneAccent(e.z, e.hero); const pt = screenOfP(e.p); zoneSound(e.z, 'hit', e.hero); zoneImpactFx(pt, e.z, e.hero, 0.8); floatAt(e.p, (ZK[e.z] || {}).icon || '!', col); await sleep(450); break; }
     case 'zoneEnd': renderZones(); break;
     case 'loseHero': { if (e._me === false) { burst(screenOfP(e.p), ['#C9B0FF', '#FFFFFF'], 14, 4); await sleep(250); break; } banner(e.hero, HEROES[e.hero].name + ' потерян', HEROES[e.by].name + ' забирает героя у игрока ' + P(e.p).name, heroColor(e.by)); await sleep(1000); break; }
     case 'horde': await showHorde(e, s); break;
@@ -4862,7 +4976,8 @@ function cardSheet(owner, hh, face) {
     const ar = areaReach(s, owner, ab);
     const noT = mineNow && ((ab.t !== 'none' && !validTargets(s, owner, ab).length) || (ar && !ar.who.length));
     const rr = ar ? ar.r : ab.r >= 99 ? 0 : abR(ab) + rangeBonus(s, owner);
-    const btn = h('button', { class: 'abtn', disabled: !mineNow || !!blocked || noT, onclick: () => pickAbility(owner, hh, ab) }, noT ? (ar ? 'В области никого нет' : 'Нет цели ' + (ab.rows != null ? rowsPhrase(ab.rows) : 'в пределах ' + rr + ' клеток')) : 'Применить и сжечь карту');
+    const hasZone = (ab.ops || []).some(o => o.op === 'zone');
+    const btn = h('button', { class: 'abtn', disabled: !mineNow || !!blocked || noT, onclick: () => pickAbility(owner, hh, ab) }, noT ? (ar ? 'В области никого нет' : 'Нет цели ' + (ab.rows != null ? rowsPhrase(ab.rows) : 'в пределах ' + rr + ' клеток')) : hasZone ? 'Показать область' : 'Применить и сжечь карту');
     const reach = ar && mineNow ? h('small', { class: 'reach' }, ar.who.length ? 'Сейчас достанет: ' + ar.who.map(q => q.name + ' (клетка ' + (q.pos + 1) + ')').join(', ') : 'Сейчас в области никого нет.') : null;
     list.appendChild(h('div', { class: 'abrow' }, h('b', null, ab.name), h('span', null, abDesc(ab)), reach, btn));
   });
@@ -4915,7 +5030,8 @@ function pickAbility(p, hh, ab) {
     const g = h('div', { class: 'num11' });
     for (let i = 2; i <= 12; i++) g.appendChild(h('button', { onclick: () => doAct(Object.assign({}, base, { value: i })) }, String(i)));
     openModal(ab.name, 'Сколько выпадет на кубиках? Потом нажми «Бросить».', h('div', null, g, h('div', { class: 'mact' }, h('button', { class: 'abtn alt', onclick: closeModal }, 'Отмена'))), { center: true });
-  } else doAct(base);
+  } else if ((ab.ops || []).some(o => o.op === 'zone')) previewTerritory(p, hh, ab, base);
+  else doAct(base);
 }
 function openPhasePrompt() {
   const s = G.s; if (!canControl()) return; const p = activeP(s);
@@ -5067,6 +5183,7 @@ addEventListener('resize', () => { setDockVar(); if (G.s && MAP.key) { renderBoa
 
 async function doAct(a) {
   if (G.busy || G.playing || !G.s) return;
+  if (ACTIVE_ZONE_PREVIEW) clearZonePreview();
   a.by = a.by || activeP(G.s).id;
   if (G.mode === 'online' && !NET.isHost) {
     closeModal(); G.busy = true; renderDock();
