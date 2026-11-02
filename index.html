@@ -262,17 +262,6 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 #hand{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
 .hcard{position:relative;aspect-ratio:2/3;border-radius:10px;overflow:hidden;border:2px solid var(--hc);box-shadow:0 0 12px color-mix(in srgb,var(--hc) 70%,transparent);background:#1E1638;padding:0;display:block;width:100%}
 .hcard img{width:100%;height:100%;object-fit:cover;display:block}
-.hcard.m-fire{border-radius:12px 12px 8px 8px;box-shadow:0 0 14px color-mix(in srgb,var(--hc) 74%,transparent),inset 0 -5px 10px rgba(255,116,50,.24)}
-.hcard.m-ice,.hcard.m-crystal{border-style:double}
-.hcard.m-void,.hcard.m-smoke{border-style:dashed}
-.hcard.m-petal{border-radius:18px 8px 18px 8px}
-.hcard.m-feather{border-radius:17px 17px 7px 7px}
-.hcard.m-rock{border-width:3px;border-radius:7px}
-.hcard.m-claw{border-style:groove}
-.hcard.m-water{border-radius:20px 20px 10px 10px}
-.hcard.arrive{z-index:10;animation:cardarrive .82s cubic-bezier(.18,1.35,.4,1) both}
-@keyframes cardarrive{0%{opacity:0;transform:translateY(34px) scale(.72) rotate(-7deg);filter:brightness(2.2)}62%{opacity:1;transform:translateY(-7px) scale(1.05) rotate(2deg);filter:brightness(1.3)}100%{transform:none;filter:none}}
-@media (prefers-reduced-motion:reduce){.hcard.arrive{animation:none}}
 .hcard .pw{position:absolute;right:4px;top:4px;font-size:.75rem;font-weight:700;background:rgba(14,10,26,.85);color:#fff;padding:1px 6px;border-radius:999px}
 .hcard .nm{position:absolute;left:0;right:0;bottom:0;padding:12px 4px 4px;font-size:.72rem;font-weight:700;color:#fff;background:linear-gradient(transparent,rgba(10,8,20,.92));text-align:center;line-height:1.1}
 .hcard.great{border-color:transparent;background:linear-gradient(#1E1638,#1E1638) padding-box,conic-gradient(from var(--ga,0deg),#FF8AD8,#8FE3FF,#FFC960,#7BE0A4,#B58CFF,#FF8AD8) border-box;animation:gspin 3s linear infinite}
@@ -487,8 +476,7 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
   #topbar .chip.icon{width:34px;height:34px;padding:0;display:grid;place-items:center;font-size:.95rem}
   #evchip{max-width:46vw}
   #wchip{max-width:34vw}
-  #dock{padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));max-height:50vh;max-height:min(52dvh,460px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
-  #bar{position:sticky;bottom:0;z-index:2;padding:6px 0 3px;background:linear-gradient(180deg,rgba(22,17,43,.7),var(--panel) 38%)}
+  #dock{padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px))}
   #strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;overflow:hidden;padding-bottom:4px}
   .pchip{min-width:0;padding:3px 6px 3px 3px;border-radius:10px}
   .pchip .bar{width:100%}
@@ -505,154 +493,6 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
   .talkbtn{width:40px;height:40px;font-size:1.15rem;opacity:.9}
   .fitem{font-size:.82rem;padding:7px 9px}
 }
-#zpeek{position:fixed;left:10px;right:10px;bottom:calc(var(--dockh,240px) + 8px);z-index:34;max-width:560px;margin:0 auto;padding:10px 12px;background:rgba(18,13,34,.97);border:1px solid rgba(243,221,160,.52);border-radius:16px;box-shadow:0 8px 28px rgba(0,0,0,.55);color:var(--ink);display:grid;gap:6px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-#zpeek[hidden]{display:none!important}
-#zpeek b{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.04rem;color:var(--gold2)}
-#zpeek span{font-size:.84rem;line-height:1.35;color:var(--ink)}
-#zpeek small{font-size:.76rem;color:var(--ink2)}
-#zpeek .zpeek-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:2px}
-#zpeek .zpeek-actions button{min-height:42px}
-.zov.zpeek-preview{z-index:5;outline:2px solid rgba(255,255,255,.88);outline-offset:-3px;opacity:.88;animation:zpeekPulse 1.2s ease-in-out infinite alternate}
-.zov.zpeek-random{opacity:.38!important;outline:1px dashed rgba(255,255,255,.9);outline-offset:-2px;animation:none!important;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.35) 0 2px,transparent 2px 7px)!important}
-.zov.zpeek-preview i{font-size:calc(var(--cs) * .42);text-shadow:0 0 8px #000,0 0 12px var(--zc)}
-.token.zpeek-target{outline:3px dashed rgba(255,255,255,.94);outline-offset:3px;filter:brightness(1.22)}
-.zov .zleft{position:absolute;right:2px;bottom:1px;padding:0 3px;border-radius:6px;background:rgba(8,6,16,.88);color:#fff;font:700 9px/1.35 system-ui,sans-serif;text-shadow:0 1px 3px #000}
-@keyframes zpeekPulse{from{filter:brightness(.9)}to{filter:brightness(1.45)}}
-@media (min-width:980px) and (min-height:560px){#zpeek{left:16px;right:406px;bottom:16px;max-width:none;margin:0 auto}}
-@media (max-width:979px),(max-height:559px){#zpeek{left:8px;right:8px;bottom:calc(var(--dockh,240px) + 8px);padding:9px 10px}#zpeek span{font-size:.8rem}#zpeek .zpeek-actions button{flex:1}}
-@media (prefers-reduced-motion:reduce){.zov.zpeek-preview{animation:none;filter:none}}
-/* ---------- Nightmare interface refresh ---------- */
-:root{--panel:#151126;--panel2:#211a36;--line:#554268;--gold:#d6b773;--gold2:#f5dfaa;--ink:#f3eee4;--ink2:#b9afc8}
-#game{background:radial-gradient(ellipse at 46% 40%,#29203c 0%,#161329 45%,#0e0d1a 100%)}
-#scroller{background:radial-gradient(ellipse at 50% 45%,rgba(100,75,132,.14),transparent 54%)}
-#map{filter:drop-shadow(0 18px 38px rgba(0,0,0,.42))}
-#map::before{content:"";position:absolute;inset:-13px -12px -11px;pointer-events:none;border:1px solid rgba(231,200,137,.34);border-radius:16px;background:linear-gradient(135deg,rgba(237,210,160,.09),transparent 12% 88%,rgba(237,210,160,.08));box-shadow:inset 0 0 0 4px rgba(13,11,25,.6),0 0 0 5px rgba(28,23,43,.72),0 0 25px rgba(0,0,0,.35)}
-#mapbg{filter:saturate(.88);background:linear-gradient(to top,#211710 0%,#25202a 26%,#192831 47%,#211b36 72%,#111326 100%)}
-.tile>div{border-radius:7px;border-color:rgba(245,228,190,.11);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 -4px 0 rgba(0,0,0,.3),0 2px 5px rgba(0,0,0,.23);transition:filter .18s,transform .18s}
-.tile.treasure>div,.tile.battle>div,.tile.portal>div,.tile.altar>div{filter:saturate(1.12) brightness(1.08)}
-#topbar{padding:13px 16px;gap:9px}
-.chip{background:linear-gradient(180deg,rgba(35,29,52,.94),rgba(17,15,29,.94));border-color:rgba(226,196,132,.24);box-shadow:0 7px 22px rgba(0,0,0,.22);letter-spacing:.015em}
-#evchip::before{content:"СОБЫТИЕ · ";font-size:.66em;letter-spacing:.11em;color:var(--gold2);opacity:.8}
-#wchip{background:linear-gradient(120deg,rgba(52,40,72,.94),rgba(18,15,31,.96))}
-#dock{background:linear-gradient(160deg,#211a34,#141123 55%,#100e1d);border-color:rgba(228,199,139,.38);box-shadow:0 -15px 45px rgba(0,0,0,.5)}
-#dock::before{content:"СОВЕТ СНОВИДЦА";display:block;color:rgba(245,223,170,.68);font-size:.61rem;letter-spacing:.2em;text-align:center;margin:1px 0 9px}
-#strip{gap:8px}
-.pchip{background:linear-gradient(140deg,rgba(53,44,70,.9),rgba(25,21,39,.95));border-color:rgba(255,255,255,.09);padding:5px 10px 5px 5px;box-shadow:0 3px 10px rgba(0,0,0,.18)}
-.pchip.act{background:linear-gradient(120deg,color-mix(in srgb,var(--pc) 19%,#251d38),#181426);box-shadow:inset 0 0 0 1px var(--pc),0 0 18px color-mix(in srgb,var(--pc) 24%,transparent)}
-#who{font-size:1.35rem;padding:8px 10px 7px;margin:2px 0 8px;border-left:2px solid var(--gold);background:linear-gradient(90deg,rgba(214,183,115,.1),transparent 75%);border-radius:0 10px 10px 0}
-#who small{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase}
-.hcard{border-radius:14px 14px 10px 10px;border-width:1px;box-shadow:0 9px 20px rgba(0,0,0,.35),0 0 0 1px color-mix(in srgb,var(--hc) 45%,transparent);transition:transform .18s,box-shadow .18s}
-.hcard:active{transform:translateY(-3px) scale(1.015)}
-.hcard::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(150deg,rgba(255,255,255,.16),transparent 22% 76%,rgba(0,0,0,.3));box-shadow:inset 0 0 0 1px rgba(255,255,255,.09)}
-.hcard .pw{top:7px;right:7px;padding:3px 8px;background:rgba(12,10,20,.84);border:1px solid rgba(245,223,170,.42);backdrop-filter:blur(4px)}
-.hcard .nm{padding:18px 5px 7px;font-size:.74rem;background:linear-gradient(transparent,rgba(8,7,14,.96))}
-#bar{gap:12px;padding:10px 3px 3px}
-.sumbtn{background:linear-gradient(135deg,rgba(43,35,60,.95),rgba(23,19,37,.95));border-color:rgba(228,199,139,.45);border-radius:12px;padding:11px 10px;box-shadow:0 3px 10px rgba(0,0,0,.18)}
-.dicebtn{background:linear-gradient(145deg,#fff5dd,#dfc27d 58%,#a57f40);border:1px solid rgba(255,247,224,.8);box-shadow:0 5px 0 #785a32,0 12px 28px rgba(0,0,0,.38),inset 0 1px 0 #fff9e8}
-#soulsBox{padding:5px 8px;border-right:2px solid rgba(143,227,255,.46)}
-#soulsBox b{color:#a8e8ff;text-shadow:0 0 18px rgba(88,194,231,.38)}
-.modal{background:linear-gradient(150deg,#211a34,#151126 62%,#100e1c);border:1px solid rgba(233,205,144,.26);box-shadow:0 28px 90px rgba(0,0,0,.62)}
-.modal h3{font-size:1.82rem;color:var(--gold2);letter-spacing:.02em}
-.abrow{display:grid;grid-template-columns:1fr;gap:10px;padding:12px;background:linear-gradient(125deg,color-mix(in srgb,var(--skill) 9%,#211a36),#171329 72%);border-color:color-mix(in srgb,var(--skill) 34%,#554268);box-shadow:inset 3px 0 0 color-mix(in srgb,var(--skill) 74%,transparent),0 5px 16px rgba(0,0,0,.17)}
-.abrow-main{display:grid;grid-template-columns:42px 1fr;gap:10px;align-items:start}
-.skill-mark{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;color:var(--skill);font-size:1.35rem;background:radial-gradient(circle at 35% 25%,color-mix(in srgb,var(--skill) 26%,transparent),rgba(15,12,24,.88));border:1px solid color-mix(in srgb,var(--skill) 58%,transparent);box-shadow:0 0 18px color-mix(in srgb,var(--skill) 20%,transparent),inset 0 0 12px color-mix(in srgb,var(--skill) 12%,transparent)}
-.skill-copy{min-width:0}.skill-copy b{color:var(--ink);font-size:1.05rem;margin:0 0 3px}.skill-copy>span{line-height:1.42}.skill-copy .reach{margin-top:6px;color:color-mix(in srgb,var(--skill) 75%,white)}
-.abrow>.abtn{margin:0;width:100%;background:linear-gradient(115deg,color-mix(in srgb,var(--skill) 45%,#dfc078),#c49f59);box-shadow:0 2px 0 #80663d}
-.cardrow img{border-radius:12px;box-shadow:0 12px 26px rgba(0,0,0,.34),0 0 0 1px color-mix(in srgb,var(--hc) 45%,transparent)}
-.mopt{background:linear-gradient(120deg,#29213c,#1a162b);border-color:rgba(255,255,255,.09);transition:transform .15s,border-color .15s}
-.mopt:active{transform:scale(.985)}
-.fitem{background:rgba(18,15,29,.96);border-color:rgba(236,213,164,.17);backdrop-filter:blur(12px)}
-@media (min-width:980px) and (min-height:560px){
-  #dock{width:370px;padding:22px 20px 24px;border-left-color:rgba(228,199,139,.34);background:radial-gradient(ellipse at 50% 0%,rgba(100,76,131,.19),transparent 44%),linear-gradient(160deg,#211a34,#141123 56%,#100e1d)}
-  #dock::before{font-size:.7rem;margin:4px 0 14px}
-  #scroller{right:370px;padding-top:76px!important}
-  #topbar{right:370px;padding:16px 22px}
-  #hand{grid-template-columns:repeat(2,minmax(0,min(154px,calc((100vh - 350px) / 3))));gap:13px}
-  #bar{padding-top:14px}
-  #map::before{inset:-17px -16px -15px;border-radius:20px}
-}
-@media (max-width:979px),(max-height:559px){
-  #topbar{padding-top:calc(9px + env(safe-area-inset-top,0px));background:linear-gradient(180deg,rgba(13,11,23,.94) 50%,rgba(13,11,23,.35),transparent)}
-  #dock{border-radius:21px 21px 0 0;max-height:min(49dvh,430px);padding-left:12px;padding-right:12px}
-  #dock::before{content:"ТВОЯ РУКА И ХОД";margin:0 0 7px;font-size:.56rem}
-  #who{font-size:1.1rem;padding:5px 8px;margin-bottom:4px}
-  #hand{gap:7px}
-  .hcard{border-radius:12px 12px 8px 8px}
-  .hcard .nm{font-size:.66rem}
-  #bar{gap:8px;padding-top:7px}
-  .dicebtn{box-shadow:0 4px 0 #785a32,0 8px 20px rgba(0,0,0,.35)}
-  #map::before{inset:-8px -7px -7px;border-radius:12px}
-  #zpeek{backdrop-filter:blur(12px)}
-}
-@media (prefers-reduced-motion:reduce){.hcard,.mopt,.tile>div{transition:none}}
-.tile-face{position:relative;isolation:isolate;overflow:hidden;background-color:var(--tb);background-image:linear-gradient(155deg,rgba(255,255,255,.1),transparent 38%,rgba(0,0,0,.35)),radial-gradient(ellipse at 50% 0%,rgba(183,155,197,.16),transparent 66%)}
-.tile-face::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.42;background-image:var(--stone);background-size:100% 100%;mix-blend-mode:screen}
-.stone-v0 .tile-face{--stone:url('assets/textures/dungeon/stone-grain-a.svg')}.stone-v1 .tile-face{--stone:url('assets/textures/dungeon/stone-grain-b.svg')}.stone-v2 .tile-face{--stone:url('assets/textures/dungeon/stone-grain-c.svg')}
-.tile-face::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.18;background:linear-gradient(130deg,transparent 38%,rgba(255,255,255,.22) 39%,transparent 41%),linear-gradient(24deg,transparent 62%,rgba(0,0,0,.55) 63%,transparent 65%);mix-blend-mode:screen}
-.tile-glyph{position:relative;z-index:1;width:68%;height:68%;overflow:visible;filter:drop-shadow(0 2px 2px rgba(0,0,0,.75)) drop-shadow(0 0 5px var(--tile-glow,transparent));transition:transform .2s,filter .2s}
-.tile:hover .tile-glyph{transform:translateY(-2px) scale(1.07)}
-.tile .n{z-index:2;left:4px;top:3px;min-width:15px;text-align:center;border-radius:5px;padding:1px 3px;background:rgba(8,8,15,.62);color:rgba(255,248,231,.76);font:700 9px/1.3 system-ui,sans-serif;text-shadow:0 1px 3px #000}
-.tile-word{position:absolute;z-index:2;bottom:3px;left:3px;right:3px;text-align:center;color:#fff0c4;font:700 8px/1 system-ui,sans-serif;letter-spacing:.15em;text-shadow:0 1px 4px #08070c}
-.tile.treasure{--tile-glow:#ffc84e}.tile.treasure .tile-face{background-image:radial-gradient(ellipse at 50% 55%,rgba(255,199,73,.34),transparent 64%),linear-gradient(145deg,#54462f,#302516)}
-.tile.treasure .tile-face::after{opacity:.48;background:linear-gradient(32deg,transparent 0 35%,rgba(255,219,111,.62) 36%,transparent 38% 70%,rgba(255,201,72,.36) 71%,transparent 73%)}
-.tile.battle{--tile-glow:#ff455a}.tile.battle .tile-face{background-image:radial-gradient(ellipse at 50% 50%,rgba(181,25,50,.36),transparent 68%),linear-gradient(145deg,#45222c,#24171f)}
-.tile.trap{--tile-glow:#cb4e64}.tile.trap .tile-face{background-image:radial-gradient(circle at 50% 55%,rgba(185,34,58,.32),transparent 63%),linear-gradient(145deg,#39212e,#1b1721)}
-.tile.omen{--tile-glow:#9c83ff}.tile.omen .tile-face{background-image:radial-gradient(circle at 50% 48%,rgba(147,121,255,.28),transparent 68%),linear-gradient(145deg,#31264b,#19162a)}
-.tile.altar{--tile-glow:#72dfff}.tile.altar .tile-face{background-image:radial-gradient(ellipse at 50% 72%,rgba(92,222,255,.25),transparent 62%),linear-gradient(145deg,#273346,#171a29)}
-.tile.portal{--tile-glow:#68e4ff}.tile.portal .tile-face{background-image:radial-gradient(circle at 50% 50%,rgba(92,221,255,.34),rgba(94,56,169,.18) 42%,transparent 70%),linear-gradient(145deg,#1f3442,#151625)}
-.tile.collapse{--tile-glow:#ff744c}.tile.collapse .tile-face{background-image:radial-gradient(ellipse at 50% 55%,rgba(213,59,39,.32),transparent 60%),repeating-linear-gradient(135deg,#322229 0 7px,#17151d 8px 12px)}
-.tile.shrine{--tile-glow:var(--sc)}.tile.shrine .tile-face{background-image:radial-gradient(circle, color-mix(in srgb,var(--sc) 38%,transparent),transparent 69%),linear-gradient(145deg,#283139,#191823)}
-.tile.start{--tile-glow:#edc875}.tile.finish{--tile-glow:#fff3b5}.tile.finish .tile-face{background-image:radial-gradient(circle,rgba(255,246,193,.36),transparent 67%),linear-gradient(145deg,#4d4230,#211b24)}
-.tile.blank .tile-glyph{display:none}
-.tile.act-target .tile-face{outline:2px solid rgba(255,255,255,.85);outline-offset:-3px}
-.tile:focus-visible .tile-face{outline:2px solid #e9d18e;outline-offset:-3px}
-.sound-slider{display:grid;gap:7px;padding:12px;margin:8px 0;background:linear-gradient(130deg,#29213c,#181428);border:1px solid rgba(233,205,144,.22);border-radius:13px;color:var(--ink)}
-.sound-slider>span{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.sound-slider output{color:var(--gold2);font-variant-numeric:tabular-nums}
-.sound-slider input{width:100%;accent-color:#d8b86f}
-@media (max-width:979px),(max-height:559px){.tile-glyph{width:70%;height:70%}.tile .n{font-size:8px}.tile-word{font-size:7px}.tile-face::before{opacity:.32}}
-@media (prefers-reduced-motion:reduce){.tile-glyph{transition:none}}
-.stone-v3 .tile-face{--stone:url('assets/textures/dungeon/stone-grain-d.svg')}.stone-v4 .tile-face{--stone:url('assets/textures/dungeon/stone-grain-e.svg')}.stone-v5 .tile-face{--stone:url('assets/textures/dungeon/stone-grain-f.svg')}
-.tile.empty:not(.blank).zone-stone .tile-face{background-image:radial-gradient(ellipse at 22% 18%,rgba(205,197,190,.18),transparent 38%),radial-gradient(ellipse at 82% 82%,rgba(0,0,0,.26),transparent 42%),linear-gradient(145deg,#4a464b 0%,#34323a 50%,#25232b 100%)}
-.tile.empty:not(.blank).zone-frost .tile-face{--tile-glow:#82d9ed;background-image:radial-gradient(ellipse at 48% 45%,rgba(113,204,225,.23),transparent 62%),linear-gradient(145deg,#31434a 0%,#21333b 52%,#17232b 100%)}
-.tile.empty:not(.blank).zone-blood .tile-face{--tile-glow:#d84958;background-image:radial-gradient(ellipse at 46% 52%,rgba(177,37,52,.25),transparent 57%),linear-gradient(145deg,#482b30 0%,#302126 54%,#1f171d 100%)}
-.tile.empty:not(.blank).zone-arcane .tile-face{--tile-glow:#a477d8;background-image:radial-gradient(ellipse at 52% 48%,rgba(151,108,202,.25),transparent 61%),linear-gradient(145deg,#3b3046 0%,#2b2338 54%,#1c1825 100%)}
-.tile.empty:not(.blank).zone-dream .tile-face{--tile-glow:#69bce7;background-image:radial-gradient(ellipse at 48% 47%,rgba(86,155,212,.25),transparent 62%),linear-gradient(145deg,#293848 0%,#202c3e 54%,#171c2a 100%)}
-.tile.empty:not(.blank).zone-stone .tile-face::after{opacity:.35;background-image:linear-gradient(119deg,transparent 0 36%,rgba(7,8,12,.78) 37%,rgba(190,183,178,.32) 37.7%,transparent 38.6%),linear-gradient(25deg,transparent 0 72%,rgba(8,8,12,.66) 73%,rgba(178,171,166,.25) 73.7%,transparent 74.5%)}
-.tile.empty:not(.blank).zone-frost .tile-face::after{opacity:.48;background-image:linear-gradient(128deg,transparent 0 31%,rgba(176,239,255,.48) 31.5%,rgba(16,47,63,.74) 32.3%,transparent 33%),linear-gradient(30deg,transparent 0 70%,rgba(165,230,248,.42) 70.5%,rgba(12,40,56,.72) 71.3%,transparent 72%)}
-.tile.empty:not(.blank).zone-blood .tile-face::after{opacity:.52;background-image:linear-gradient(117deg,transparent 0 22%,rgba(14,9,14,.85) 23%,rgba(199,58,65,.58) 23.7%,transparent 24.7%),linear-gradient(18deg,transparent 0 67%,rgba(15,9,14,.8) 68%,rgba(205,53,61,.48) 68.7%,transparent 69.7%)}
-.tile.empty:not(.blank).zone-arcane .tile-face::after{opacity:.34;background-image:repeating-conic-gradient(from 12deg at 77% 74%,rgba(205,173,248,.55) 0 1deg,transparent 1deg 30deg),radial-gradient(circle at 77% 74%,transparent 0 17%,rgba(178,141,225,.55) 18% 19%,transparent 20%);}
-.tile.empty:not(.blank).zone-dream .tile-face::after{opacity:.4;background-image:linear-gradient(130deg,transparent 0 35%,rgba(165,224,255,.56) 35.5%,rgba(21,49,74,.72) 36.4%,transparent 37.2%),linear-gradient(38deg,transparent 0 67%,rgba(165,224,255,.46) 67.5%,transparent 68.4%),radial-gradient(circle at 78% 22%,rgba(200,241,255,.55) 0 1px,transparent 2px)}
-.mat-ornament{display:none;position:absolute;z-index:1;right:5px;bottom:5px;width:11px;height:11px;pointer-events:none;opacity:.62}
-.tile.empty:not(.blank).etch .mat-ornament{display:block}
-.tile.zone-stone.etch .mat-ornament{width:9px;height:7px;clip-path:polygon(0 25%,78% 0,100% 68%,28% 100%);background:linear-gradient(140deg,#b4a9a0,#302d32)}
-.tile.zone-frost.etch .mat-ornament{clip-path:polygon(50% 0,66% 35%,100% 50%,66% 65%,50% 100%,34% 65%,0 50%,34% 35%);background:linear-gradient(145deg,#f1ffff,#62c0de 55%,#335a77);filter:drop-shadow(0 0 3px #73d9f0)}
-.tile.zone-blood.etch .mat-ornament{width:12px;height:8px;background:radial-gradient(ellipse,#f04b58,rgba(124,25,41,.5) 48%,transparent 75%);filter:blur(.5px)}
-.tile.zone-arcane.etch .mat-ornament{border:1px solid #c69af0;border-radius:50%;box-shadow:inset 0 0 3px #c69af0,0 0 4px #9563cb;transform:rotate(45deg)}
-.tile.zone-dream.etch .mat-ornament{clip-path:polygon(50% 0,61% 38%,100% 50%,61% 62%,50% 100%,39% 62%,0 50%,39% 38%);background:#9de7ff;filter:drop-shadow(0 0 4px #68bfff)}
-.tile.treasure.stone-v0 .tile-face::after{background-image:linear-gradient(122deg,transparent 0 28%,#21180f 29%,#f1ca65 29.7%,transparent 30.8%),linear-gradient(25deg,transparent 0 68%,#c48e37 69%,transparent 70%)}
-.tile.treasure.stone-v1 .tile-face::after{background-image:linear-gradient(146deg,transparent 0 41%,#21180f 42%,#e9c265 42.7%,transparent 43.8%),linear-gradient(18deg,transparent 0 78%,#d2a149 79%,transparent 80%)}
-.tile.treasure.stone-v2 .tile-face::after{background-image:linear-gradient(112deg,transparent 0 61%,#21180f 62%,#f3d67c 62.7%,transparent 63.8%),linear-gradient(35deg,transparent 0 24%,#bd8731 25%,transparent 26%)}
-.tile.treasure.stone-v3 .tile-face::after{background-image:linear-gradient(132deg,transparent 0 54%,#21180f 55%,#f1ca65 55.7%,transparent 56.8%),linear-gradient(14deg,transparent 0 39%,#c48e37 40%,transparent 41%)}
-.tile.battle.stone-v0 .tile-face::after,.tile.trap.stone-v0 .tile-face::after{background-image:linear-gradient(126deg,transparent 0 28%,rgba(13,8,13,.9) 29%,#cc4756 29.8%,transparent 31%),linear-gradient(24deg,transparent 0 70%,#9c293b 71%,transparent 72%)}
-.tile.battle.stone-v1 .tile-face::after,.tile.trap.stone-v1 .tile-face::after{background-image:linear-gradient(148deg,transparent 0 45%,rgba(13,8,13,.9) 46%,#e15b60 46.8%,transparent 48%),linear-gradient(19deg,transparent 0 25%,#9c293b 26%,transparent 27%)}
-.tile.battle.stone-v2 .tile-face::after,.tile.trap.stone-v2 .tile-face::after{background-image:linear-gradient(118deg,transparent 0 57%,rgba(13,8,13,.9) 58%,#cf4b5a 58.8%,transparent 60%),linear-gradient(38deg,transparent 0 33%,#a52f40 34%,transparent 35%)}
-.tile.battle.stone-v3 .tile-face::after,.tile.trap.stone-v3 .tile-face::after{background-image:linear-gradient(141deg,transparent 0 21%,rgba(13,8,13,.9) 22%,#d54b59 22.8%,transparent 24%),linear-gradient(28deg,transparent 0 77%,#a52f40 78%,transparent 79%)}
-.tile.omen.stone-v0 .tile-face::after{background-image:radial-gradient(circle at 77% 73%,transparent 0 17%,#c09bf2 18% 19%,transparent 20%),repeating-conic-gradient(from 8deg at 77% 73%,rgba(202,174,246,.5) 0 1deg,transparent 1deg 28deg)}
-.tile.omen.stone-v1 .tile-face::after{background-image:radial-gradient(circle at 28% 70%,transparent 0 20%,#b98eea 21% 22%,transparent 23%),repeating-conic-gradient(from 19deg at 28% 70%,rgba(202,174,246,.5) 0 1deg,transparent 1deg 34deg)}
-.tile.omen.stone-v2 .tile-face::after{background-image:radial-gradient(circle at 76% 26%,transparent 0 18%,#b98eea 19% 20%,transparent 21%),repeating-conic-gradient(from 30deg at 76% 26%,rgba(202,174,246,.5) 0 1deg,transparent 1deg 32deg)}
-.tile.omen.stone-v3 .tile-face::after{background-image:radial-gradient(circle at 25% 28%,transparent 0 17%,#b98eea 18% 19%,transparent 20%),repeating-conic-gradient(from 5deg at 25% 28%,rgba(202,174,246,.5) 0 1deg,transparent 1deg 30deg)}
-.tile.portal.stone-v0 .tile-face::after,.tile.altar.stone-v0 .tile-face::after{background-image:linear-gradient(132deg,transparent 0 34%,rgba(173,239,255,.5) 34.5%,rgba(11,37,58,.75) 35.3%,transparent 36%),radial-gradient(circle at 78% 24%,rgba(220,249,255,.65) 0 1px,transparent 2px)}
-.tile.portal.stone-v1 .tile-face::after,.tile.altar.stone-v1 .tile-face::after{background-image:linear-gradient(28deg,transparent 0 62%,rgba(173,239,255,.55) 62.5%,rgba(11,37,58,.75) 63.3%,transparent 64%),radial-gradient(circle at 24% 27%,rgba(220,249,255,.65) 0 1px,transparent 2px)}
-.tile.portal.stone-v2 .tile-face::after,.tile.altar.stone-v2 .tile-face::after{background-image:linear-gradient(148deg,transparent 0 48%,rgba(173,239,255,.55) 48.5%,rgba(11,37,58,.75) 49.3%,transparent 50%),radial-gradient(circle at 78% 75%,rgba(220,249,255,.65) 0 1px,transparent 2px)}
-.tile.portal.stone-v3 .tile-face::after,.tile.altar.stone-v3 .tile-face::after{background-image:linear-gradient(18deg,transparent 0 35%,rgba(173,239,255,.55) 35.5%,rgba(11,37,58,.75) 36.3%,transparent 37%),radial-gradient(circle at 25% 73%,rgba(220,249,255,.65) 0 1px,transparent 2px)}
-@media (prefers-reduced-motion:reduce){.tile-glyph{transition:none}}
-/* MATERIAL ATLAS V2 */
-.tile-face::before{background-image:url('assets/textures/dungeon/tile-materials-v2.png');background-repeat:no-repeat;background-size:500% auto;background-position:var(--material-x,0%) var(--material-y,41%);opacity:1;mix-blend-mode:normal}
-.stone-v0 .tile-face::before{--material-y:38%}.stone-v1 .tile-face::before{--material-y:40%}.stone-v2 .tile-face::before{--material-y:42%}.stone-v3 .tile-face::before{--material-y:44%}.stone-v4 .tile-face::before{--material-y:46%}.stone-v5 .tile-face::before{--material-y:48%}
-.tile.zone-stone .tile-face::before{--material-x:0%}.tile.zone-frost .tile-face::before,.tile.zone-dream .tile-face::before{--material-x:100%}.tile.zone-blood .tile-face::before{--material-x:50%}.tile.zone-arcane .tile-face::before{--material-x:75%}
-.tile.treasure .tile-face::before{--material-x:25%}.tile.battle .tile-face::before,.tile.trap .tile-face::before,.tile.collapse .tile-face::before{--material-x:50%}.tile.omen .tile-face::before{--material-x:75%}.tile.portal .tile-face::before,.tile.altar .tile-face::before{--material-x:100%}.tile.start .tile-face::before,.tile.finish .tile-face::before{--material-x:25%}
-.tile-face::after{background-image:none!important;opacity:0!important}
 </style>
 </head>
 <body>
@@ -727,7 +567,7 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
       <button class="chip icon" id="bMenu" aria-label="Меню">☰</button>
     </header>
     <section id="dock">
-      <button id="bMini" aria-label="Скрыть карты" aria-controls="hand" aria-expanded="true">▾ карты</button>
+      <button id="bMini" aria-label="Скрыть карты">▾ карты</button>
       <div id="strip"></div>
       <div id="who"></div>
       <div id="aura"></div>
@@ -739,7 +579,6 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 </div>
 <canvas id="fxc"></canvas>
 <div id="stage"></div>
-<div id="zpeek" role="region" aria-label="Предпросмотр территориальной способности" hidden aria-live="polite"></div>
 <div id="feed" aria-live="polite"></div>
 <div id="ov"></div>
 <div class="sumov" id="sumov"></div>
@@ -3966,39 +3805,10 @@ function avatarEl(p, cls) {
 }
 
 // ===================== Sound (Web Audio synthesis) =====================
-const SND = { ctx:null, on:store.get('sound',true), master:null, fx:null, music:null, ambience:null, fxLevel:store.get('fxLevel',.72), musicLevel:store.get('musicLevel',.18), ambienceLevel:store.get('ambienceLevel',.12), bed:[], mood:'' };
+const SND = { ctx: null, on: store.get('sound', true), master: null };
 function audioInit() {
-  if (SND.ctx) { if (SND.ctx.state === 'suspended') SND.ctx.resume(); applySoundLevels(); return; }
-  try {
-    const C = window.AudioContext || window.webkitAudioContext; SND.ctx = new C();
-    SND.master = SND.ctx.createGain(); SND.master.gain.value = .8; SND.master.connect(SND.ctx.destination);
-    SND.fx = SND.ctx.createGain(); SND.music = SND.ctx.createGain(); SND.ambience = SND.ctx.createGain();
-    SND.fx.connect(SND.master); SND.music.connect(SND.master); SND.ambience.connect(SND.master);
-    startSoundscape(); applySoundLevels(); setSoundscapeMood();
-  } catch (e) { }
-}
-function applySoundLevels() {
-  if (!SND.ctx) return;
-  const now = SND.ctx.currentTime;
-  if (SND.fx) SND.fx.gain.setTargetAtTime(SND.on ? SND.fxLevel : 0, now, .06);
-  if (SND.music) SND.music.gain.setTargetAtTime(SND.on ? SND.musicLevel : 0, now, .12);
-  if (SND.ambience) SND.ambience.gain.setTargetAtTime(SND.on ? SND.ambienceLevel : 0, now, .15);
-}
-function startSoundscape() {
-  if (!SND.ctx || SND.bed.length) return;
-  const c = SND.ctx;
-  [0,1,2].forEach(i => { const o=c.createOscillator(), g=c.createGain(); o.type=i===0?'triangle':'sine'; g.gain.value=[.22,.10,.035][i]; o.connect(g); g.connect(SND.music); o.start(); SND.bed.push(o); });
-  const buffer=c.createBuffer(1,c.sampleRate*2,c.sampleRate), data=buffer.getChannelData(0);
-  for(let i=0;i<data.length;i++) data[i]=Math.random()*2-1;
-  const src=c.createBufferSource(), filter=c.createBiquadFilter(), gain=c.createGain(); src.buffer=buffer; src.loop=true; filter.type='lowpass'; filter.frequency.value=340; filter.Q.value=.7; gain.gain.value=.13; src.connect(filter); filter.connect(gain); gain.connect(SND.ambience); src.start();
-}
-function setSoundscapeMood() {
-  if (!SND.ctx || SND.bed.length<3) return;
-  const inGame=$('game') && $('game').classList.contains('on'), s=G.s;
-  const mood=!inGame?'menu':s && s.status==='over'?'final':s && s.world?'dream':s && ['battle','pvp'].includes(s.phase)?'battle':'dungeon';
-  if (SND.mood===mood) return; SND.mood=mood;
-  const chords={menu:[55,82.41,110],dungeon:[49,73.42,98],dream:[65.41,98,130.81],battle:[58.27,87.31,116.54],final:[73.42,110,146.83]}[mood];
-  SND.bed.forEach((o,i)=>o.frequency.setTargetAtTime(chords[i],SND.ctx.currentTime,2.4));
+  if (SND.ctx) { if (SND.ctx.state === 'suspended') SND.ctx.resume(); return; }
+  try { const C = window.AudioContext || window.webkitAudioContext; SND.ctx = new C(); SND.master = SND.ctx.createGain(); SND.master.gain.value = 0.55; SND.master.connect(SND.ctx.destination); } catch (e) { }
 }
 document.addEventListener('pointerdown', audioInit);
 function tone(f, dur, o = {}) {
@@ -4009,7 +3819,7 @@ function tone(f, dur, o = {}) {
   if (o.detune) os.detune.value = o.detune;
   const v = o.vol == null ? 0.25 : o.vol, a = o.attack || 0.01;
   g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + a); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-  os.connect(g); g.connect(SND.fx || SND.master); os.start(t); os.stop(t + dur + 0.05);
+  os.connect(g); g.connect(SND.master); os.start(t); os.stop(t + dur + 0.05);
 }
 let NOISEBUF = null;
 function noise(dur, o = {}) {
@@ -4020,7 +3830,7 @@ function noise(dur, o = {}) {
   if (o.f2) fl.frequency.exponentialRampToValueAtTime(o.f2, t + dur);
   const g = c.createGain(); const v = o.vol == null ? 0.3 : o.vol;
   g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + (o.attack || 0.01)); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-  src.connect(fl); fl.connect(g); g.connect(SND.fx || SND.master); src.start(t); src.stop(t + dur + 0.05);
+  src.connect(fl); fl.connect(g); g.connect(SND.master); src.start(t); src.stop(t + dur + 0.05);
 }
 const arp = (fs, step, o) => fs.forEach((f, i) => tone(f, o.dur || 0.35, Object.assign({}, o, { at: (o.at || 0) + i * step })));
 const SFX = {
@@ -4256,13 +4066,6 @@ const TINFO = {
   omen: 'Знамение: открывается карта события, которая на три круга меняет подземелье для всех.'
 };
 function cellCenter(i) { const r = rowOf(i), c = colOf(i); return { x: c * MAP.cs + MAP.cs / 2, y: MAP.top + (ROWS - 1 - r) * MAP.cs + MAP.cs / 2 }; }
-const TILE_GLYPHS = { treasure:'gem', trap:'unknown', battle:'swords', altar:'altar', portal:'portal', collapse:'rift', shrine:'shrine', omen:'oracle', start:'stairs', finish:'dawn' };
-function tileGlyph(type) {
-  const id = TILE_GLYPHS[type]; if (!id) return null;
-  const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg'), use = document.createElementNS(ns, 'use');
-  svg.setAttribute('class','tile-glyph'); svg.setAttribute('viewBox','0 0 64 64'); svg.setAttribute('aria-hidden','true');
-  use.setAttribute('href','assets/ui/tile-symbols.svg#i-' + id); use.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href','assets/ui/tile-symbols.svg#i-' + id); svg.appendChild(use); return svg;
-}
 function renderBoard(seed, ev) {
   const B = buildBoard(seed, ev); MAP.B = B; MAP.key = seed + ':' + ev + ':' + CELLS;
   const sc = $('scroller'); const W = Math.min((sc.clientWidth || innerWidth) - 12, DESK() ? 740 : 560);
@@ -4271,15 +4074,12 @@ function renderBoard(seed, ev) {
   m.style.setProperty('--cs', MAP.cs + 'px'); m.style.setProperty('--ts', Math.min(38, MAP.cs * 0.7) + 'px');
   const tl = $('tiles'); tl.innerHTML = ''; MAP.tiles = [];
   B.cells.forEach(c => {
-    const r = rowOf(c.id), col = colOf(c.id), floor = Math.min(4, Math.floor(r / ZROWS)); const z = ZONES[floor];
+    const r = rowOf(c.id), col = colOf(c.id); const z = ZONES[Math.min(4, Math.floor(r / ZROWS))];
     const tb = (r + col) % 2 ? z[0] : z[1];
-    const mats = ['stone','frost','blood','arcane','dream'], variant = (c.id * 17 + floor * 11) % 6;
-    const label = c.type === 'start' ? 'СОН' : c.type === 'finish' ? 'ЯВЬ' : null;
-    const etch = (c.id * 7 + floor) % 4 === 0;
-    const inner = h('div', { class:'tile-face' }, h('span', { class:'mat-ornament', 'aria-hidden':'true' }), tileGlyph(c.type), h('span', { class: 'n' }, String(c.id + 1)), label ? h('span', { class:'tile-word' }, label) : null);
+    const inner = h('div', null, TICON[c.type], h('span', { class: 'n' }, String(c.id + 1)));
     const rowEnd = (r % 2 === 0 && col === COLS - 1) || (r % 2 === 1 && col === 0);
     if (rowEnd && c.id < CELLS - 1) inner.appendChild(h('span', { class: 'turn' }, '⤴'));
-    const t = h('button', { class: 'tile ' + c.type + ' stone-v' + variant + ' zone-' + mats[floor] + (etch ? ' etch' : ''), style: `left:${col * MAP.cs}px;top:${MAP.top + (ROWS - 1 - r) * MAP.cs}px;width:${MAP.cs}px;height:${MAP.cs}px;--tb:${tb}` + (c.type === 'shrine' ? `;--sc:${COLORS[c.color].hex}` : ''), 'aria-label': 'Клетка ' + (c.id + 1) }, inner);
+    const t = h('button', { class: 'tile ' + c.type, style: `left:${col * MAP.cs}px;top:${MAP.top + (ROWS - 1 - r) * MAP.cs}px;width:${MAP.cs}px;height:${MAP.cs}px;--tb:${tb}` + (c.type === 'shrine' ? `;--sc:${COLORS[c.color].hex}` : ''), 'aria-label': 'Клетка ' + (c.id + 1) }, inner);
     t.addEventListener('click', () => {
       let d = TINFO[c.type];
       if (c.type === 'shrine') d = 'Святилище, ' + COLORS[c.color].name + ' цвет: усиливает героя этого цвета в руке.';
@@ -4319,74 +4119,12 @@ function renderMarks() {
     t.firstChild.appendChild(h('span', { class: 'mark', style: '--pc:' + (o ? o.color : '#fff') }, mk.type === 'camp' ? '⛺' : mk.type === 'crystal' ? '💠' : '✶'));
   }
 }
-let ACTIVE_ZONE_PREVIEW = null;
-function zoneAccent(z, hero) {
-  const colors = { firewall:'#FF754F', firecircle:'#FF8A4D', iceWall:'#A8E8FF', crystalWall:'#B9A6FF', crystalArea:'#B9A6FF', rift:'#A77BFF', puddle:'#A77BFF', portal:'#72DFFF', reef:'#63D9EA', web:'#E5DFFF', webcover:'#E5DFFF', bloodtrap:'#F05E78', boneWall:'#C6A57A', thorns:'#FF86B6' };
-  return colors[z] || (HEROES[hero] ? heroColor(hero) : '#F3DDA0');
-}
-function previewZoneCells(s, center, Z) {
-  if (Z.shape !== 'scatter') return { cells: shapeCells(s, Z, center, () => 0.5), random: false, count: 0 };
-  const groups = Z.groups || [{ a: Z.a == null ? 0 : Z.a, b: Z.b == null ? 0 : Z.b, n: Z.n || 1 }];
-  const rc = rowOf(center), all = new Set();
-  groups.forEach(g => {
-    for (let r = rc + g.a; r <= rc + g.b; r++) if (r >= 0 && r < ROWS)
-      for (let c = 0; c < COLS; c++) { const i = cellAt(r, c); if (i !== center && i > 0 && i < CELLS - 1) all.add(i); }
-  });
-  const cells = [...all].sort((a, b) => a - b);
-  const count = Math.min(cells.length, groups.reduce((n, g) => n + (g.n || Z.n || 1), 0));
-  return { cells, random: true, count };
-}
-function clearZonePreview() {
-  if (!ACTIVE_ZONE_PREVIEW) return;
-  document.querySelectorAll('.zpeek-preview').forEach(x => x.remove());
-  Object.values(MAP.toks).forEach(t => t.classList.remove('zpeek-target'));
-  const box = $('zpeek'); box.hidden = true; box.innerHTML = '';
-  ACTIVE_ZONE_PREVIEW = null;
-}
-function previewTerritory(p, hh, ab, base) {
-  const ops = (ab.ops || []).filter(o => o.op === 'zone');
-  if (!ops.length || !MAP.B) return false;
-  closeModal(); clearZonePreview();
-  const plans = ops.map(op => ({ op, ...previewZoneCells(G.s, p.pos, op) }));
-  ACTIVE_ZONE_PREVIEW = { base, hero: hh.k };
-  const marked = new Set();
-  plans.forEach(plan => {
-    const op = plan.op, vis = op.vis || ZVIS[op.z] || 'gen', color = zoneAccent(op.z, hh.k);
-    plan.cells.forEach(i => {
-      marked.add(i);
-      const tile = MAP.tiles[i]; if (!tile) return;
-      const random = plan.random ? ' zpeek-random' : '';
-      const icon = op.icon || (ZK[op.z] || {}).icon || '✦';
-      tile.firstChild.appendChild(h('span', { class: 'zov zpeek-preview v-' + vis + random, style: '--zc:' + color, 'aria-hidden': 'true' }, h('i', null, icon)));
-    });
-  });
-  G.s.players.forEach(q => { const token = MAP.toks[q.id]; if (token && marked.has(G.disp[q.id] ?? q.pos)) token.classList.add('zpeek-target'); });
-  const rows = plans.map(plan => {
-    const Z = plan.op, label = Z.name || (ZK[Z.z] || {}).name || 'Территория';
-    const cells = plan.random ? plan.count + ' случайных клеток среди ' + plan.cells.length + ' возможных' : plan.cells.length + ' клеток';
-    const duration = Z.left == null ? (ZK[Z.z] && ZK[Z.z].once ? ' · сработает один раз' : ' · останется на поле') : ' · ' + Z.left + ' круга';
-    return label + ': ' + cells + duration;
-  });
-  const box = $('zpeek'); box.innerHTML = '';
-  box.appendChild(h('b', null, 'Предпросмотр · ' + ab.name));
-  rows.forEach((line, i) => box.appendChild(h('span', null, line)));
-  if (plans.some(x => x.random)) box.appendChild(h('small', null, 'Штриховка показывает возможные клетки. Точные случайные клетки определятся при применении.'));
-  const actions = h('div', { class: 'zpeek-actions' });
-  actions.appendChild(h('button', { class: 'abtn alt', type: 'button', onclick: clearZonePreview }, 'Отмена'));
-  actions.appendChild(h('button', { class: 'abtn', type: 'button', onclick: () => { const act = ACTIVE_ZONE_PREVIEW && ACTIVE_ZONE_PREVIEW.base; clearZonePreview(); if (act) doAct(act); } }, 'Применить способность'));
-  box.appendChild(actions); box.hidden = false;
-  box.onkeydown = e => { if (e.key === 'Escape') { e.preventDefault(); clearZonePreview(); } };
-  const confirm = box.querySelector('.abtn:not(.alt)'); if (confirm) confirm.focus();
-  const focus = plans.flatMap(x => x.cells).sort((a, b) => Math.abs(a - p.pos) - Math.abs(b - p.pos))[0];
-  if (focus != null) focusCell(focus);
-  return true;
-}
 function renderZones() {
   if (!G.s) return;
   document.querySelectorAll('.zov').forEach(m => m.remove());
-  (G.s.zones || []).forEach(z => { const owner = z.owner && G.s.players.find(p => p.id === z.owner); const col = owner ? owner.color : heroColor(z.hero); const K = ZK[z.z] || {}; const title = (owner ? owner.name + ' · ' : '') + (z.nm || K.name || 'Зона') + (z.left != null ? ' · ещё ' + z.left + ' круга' : ''); z.cells.forEach(i => { const t = MAP.tiles[i]; if (!t) return; t.firstChild.appendChild(h('span', { class: 'zov v-' + (z.vis || ZVIS[z.z] || 'gen') + (K.big ? ' big' : ''), style: '--zc:' + col, title, 'aria-hidden': 'true' }, h('i', null, z.icon || K.icon || '·'), z.left != null ? h('b', { class: 'zleft' }, String(z.left)) : null)); }); });
+  (G.s.zones || []).forEach(z => { const col = heroColor(z.hero); const K = ZK[z.z] || {}; z.cells.forEach(i => { const t = MAP.tiles[i]; if (!t) return; t.firstChild.appendChild(h('span', { class: 'zov v-' + (z.vis || ZVIS[z.z] || 'gen') + (K.big ? ' big' : ''), style: '--zc:' + col }, h('i', null, z.icon || K.icon || '·'))); }); });
   const me = G.s.players.find(x => x.id === meId()); const dk = $('darkov'); if (dk) dk.classList.toggle('on', !!(me && me.st.dark > 0 && !me.place));
-  if (G.s.blank) Object.keys(G.s.blank).forEach(i => { const t = MAP.tiles[i]; if (t) { t.className = 'tile empty blank'; const ic = t.querySelector('.tile-glyph'); if (ic) ic.hidden = true; } });
+  if (G.s.blank) Object.keys(G.s.blank).forEach(i => { const t = MAP.tiles[i]; if (t) { t.className = 'tile empty'; const ic = t.firstChild.firstChild; if (ic && ic.nodeType === 3) ic.textContent = ''; } });
 }
 function renderTokens() {
   if (!G.s || !MAP.B) return;
@@ -4654,9 +4392,8 @@ async function showSummon(e, s) {
   ov.appendChild(h('div', { class: 'flip' }, h('div', { class: 'in' }, h('div', { class: 'fr', style: 'background-image:' + CARDIMG.bg(e.hero) }), h('div', { class: 'bk' }))));
   SFX.summon(tier); flash(rc);
   const cpt = { x: innerWidth / 2, y: innerHeight / 2 };
-  heroSignatureFx(e.hero, cpt, H.great ? 1.65 : 1);
-  motifSnd(H.motif || 'star');
-  if (H.great) { shake(); ring(cpt, rc, 300, 8, 70); setTimeout(() => ring(cpt, '#FFF0BB', 210, 5, 58), 220); }
+  burst(cpt, H.great ? ['#FF8AD8', '#8FE3FF', '#FFC960', '#7BE0A4', '#B58CFF'] : [rc, '#FFFFFF'], H.great ? 110 : 40, H.great ? 10 : 6);
+  if (H.great) { shake(); ring(cpt, '#FF8AD8', 300, 8, 70); setTimeout(() => ring(cpt, '#8FE3FF', 240, 6, 60), 200); setTimeout(() => ring(cpt, '#FFC960', 180, 4, 50), 400); }
   ov.appendChild(h('h4', null, H.name));
   ov.appendChild(h('p', null, clsLabel(H) + '. ' + H.title + '. Сила ' + H.pw + ', ' + COLORS[H.col].name + ' цвет.'));
   const full = s.phase === 'replace' && s.pending && s.pending.newHero === e.hero;
@@ -4790,110 +4527,7 @@ function motifFx(pt, color, motif, n = 26) {
     default: burst(pt, color, n, 5);
   }
 }
-function heroSignatureFx(heroKey, pt, power = 1) {
-  if (!pt) return;
-  const H = HEROES[heroKey] || {}, motif = H.motif || 'star', col = heroColor(heroKey);
-  const count = Math.round((H.great ? 52 : 24) * power);
-  switch (motif) {
-    case 'fire':
-      burst(pt, ['#FF7A50', '#FFD27A', col], count, 7 * power, { shape: 'ember', g: -0.08 });
-      ring(pt, '#FFC66D', 68 * power, 3, 38); break;
-    case 'ice':
-      burst(pt, [col, '#EAFBFF', '#FFFFFF'], count, 6 * power, { shape: 'flake' });
-      ring(pt, '#DDF8FF', 84 * power, 4, 48); break;
-    case 'crystal':
-      burst(pt, [col, '#FFFFFF', '#C9F3FF'], count, 7 * power, { shape: 'shard' });
-      ring(pt, col, 74 * power, 4, 48); break;
-    case 'water':
-      motifFx(pt, col, motif, count);
-      ring(pt, '#E0FAFF', 96 * power, 3, 52); setTimeout(() => ring(pt, col, 66 * power, 2, 42), 120); break;
-    case 'void':
-      portalFx(pt, col, H.great ? 66 : 46);
-      spiral(pt, [col, '#FFFFFF', '#171022'], Math.round(26 * power)); ringIn(pt, col, 120 * power, 48); break;
-    case 'smoke':
-      motifFx(pt, col, motif, count); ringIn(pt, '#342249', 90 * power, 44); break;
-    case 'blood':
-      motifFx(pt, col, motif, count);
-      ring(pt, '#C0182E', 72 * power, 5, 44); break;
-    case 'petal': case 'feather':
-      motifFx(pt, col, motif, count);
-      burst(pt, [col, '#FFF0D0'], Math.round(10 * power), 4 * power, { shape: motif === 'petal' ? 'petal' : 'feather' }); break;
-    case 'rock': case 'claw':
-      motifFx(pt, col, motif, count);
-      if (motif === 'rock') rocks(pt, Math.round(14 * power));
-      else { ring(pt, col, 56 * power, 4, 34); shake(); }
-      break;
-    case 'star': case 'eye':
-      motifFx(pt, col, motif, count);
-      spiral(pt, [col, '#FFF5CD', '#FFFFFF'], Math.round(20 * power)); break;
-    case 'card':
-      motifFx(pt, col, motif, count); ring(pt, col, 74 * power, 3, 38); break;
-    default:
-      motifFx(pt, col, motif, count); ring(pt, col, 72 * power, 3, 38);
-  }
-}
 const TGT_OPS = ['push', 'steal', 'drain', 'burn', 'pull', 'skip', 'debuff', 'mark', 'poison', 'equalize', 'swapHero', 'giftSkip', 'ambushTarget', 'duel'];
-function skillHash(s) { let n = 2166136261; for (let i = 0; i < s.length; i++) n = Math.imul(n ^ s.charCodeAt(i), 16777619); return n >>> 0; }
-function skillGlyph(ab, motif) {
-  const ops = (ab.ops || []).map(o => o.op);
-  if (ops.some(o => ['zone', 'portals', 'place'].includes(o))) return ({ fire:'✹', ice:'❄', crystal:'✧', void:'◉', water:'◌', rock:'⬟', petal:'❀', star:'✦', web:'⌘' })[motif] || '⌖';
-  if (ops.some(o => ['burn', 'damage', 'strike', 'duel'].includes(o))) return '⚔';
-  if (ops.some(o => ['shield', 'guard', 'mirror', 'immune'].includes(o))) return '◇';
-  if (ops.some(o => ['fly', 'up', 'catchup', 'behindLeader'].includes(o))) return '↑';
-  if (ops.some(o => ['steal', 'pull', 'drain'].includes(o))) return '↗';
-  if (ops.some(o => ['bind', 'bindT', 'skip', 'blind', 'silence'].includes(o))) return '⌁';
-  return ({ feather:'➶', petal:'❀', fire:'✹', ice:'❄', crystal:'✧', void:'◉', smoke:'◌', blood:'♥', claw:'╳', rock:'⬟', eye:'◎', water:'◍', star:'✦', card:'▱' })[motif] || '✧';
-}
-function abilityWindupFx(heroKey, ab, c) {
-  if (!c) return;
-  const H = HEROES[heroKey] || {}, motif = H.motif || 'star', col = heroColor(heroKey), seed = skillHash(heroKey + ':' + ab.id);
-  ringIn(c, col, 34 + seed % 20, RM ? 18 : 28);
-  if (motif === 'void' || motif === 'smoke') spiral(c, [col, '#20182f', '#FFFFFF'], RM ? 7 : 13);
-  else if (motif === 'ice' || motif === 'crystal') burst(c, [col, '#EAFBFF', '#FFFFFF'], RM ? 4 : 10, 1.5, { shape:'flake', life:24 });
-  else if (motif === 'fire' || motif === 'blood') burst(c, [col, '#FFCE79', '#FF7048'], RM ? 4 : 9, 1.7, { shape:'ember', g:-.04, life:26 });
-  else if (motif === 'rock' || motif === 'claw') { ring(c, col, 25 + seed % 14, 2, 24); if (!RM) rocks(c, 4); }
-  else if (motif === 'water') burst(c, [col, '#E4FAFF'], RM ? 4 : 8, 1.5, { shape:'drop', g:-.025, life:25 });
-  else burst(c, [col, lighten(col, .45), '#FFFFFF'], RM ? 4 : 8, 1.8, { shape: motif === 'petal' ? 'petal' : 'star', life:26 });
-}
-function abilitySignatureFx(heroKey, ab, c, t, all, power = 1) {
-  if (!c) return;
-  const H = HEROES[heroKey] || {}, face = ab.face && H.faces ? H.faces.find(x => x.id === ab.face) : null;
-  const motif = face ? face.motif : H.motif || 'star', col = face ? COLORS[face.col].hex : heroColor(heroKey), seed = skillHash(heroKey + ':' + ab.id);
-  const ops = (ab.ops || []).map(o => o.op), zone = ops.some(o => ['zone','portals'].includes(o));
-  const global = ab.t === 'all' || ops.some(o => ['blind','silence','cleanseAll','pushAll','damageAll','storm','judgment','purge','eclipse','orbit','shuffleHands','flyAll'].includes(o));
-  const marks = global && all && all.length ? all.filter(Boolean) : t ? [t] : [c];
-  const sharp = ops.some(o => ['burn','damage','strike','duel','ambushTarget','quake'].includes(o)) || motif === 'claw';
-  const projectile = ops.some(o => ['push','pull','steal','drain','mark','poison','bind','bindT','skip','blindOthers','delayHit'].includes(o));
-  if (zone) {
-    nova(c, col, motif, 70 + seed % 45);
-    motifFx(c, col, motif, RM ? 5 : 12);
-    return;
-  }
-  if (global) {
-    marks.forEach((pt, i) => setTimeout(() => {
-      if (sharp) { beam({ x:pt.x - 24, y:pt.y - 30 }, { x:pt.x + 24, y:pt.y + 25 }, col, 2.5, 22); burst(pt, [col, lighten(col,.45)], RM ? 4 : 9, 3.2, { shape: motif === 'fire' ? 'ember' : motif === 'ice' ? 'flake' : 'shard' }); }
-      else { ringIn(pt, col, 50 + seed % 34, 28); motifFx(pt, col, motif, RM ? 4 : 10); }
-    }, i * (RM ? 0 : 90)));
-    return;
-  }
-  if (t && t !== c) {
-    if (sharp) {
-      const dx = t.x - c.x, dy = t.y - c.y, d = Math.hypot(dx,dy) || 1, nx = -dy / d, ny = dx / d;
-      setTimeout(() => beam({ x:t.x - nx * 34 - dx / d * 22, y:t.y - ny * 34 - dy / d * 22 }, { x:t.x + nx * 34 + dx / d * 22, y:t.y + ny * 34 + dy / d * 22 }, col, 3.5, 25), 80);
-      setTimeout(() => { burst(t, [col, lighten(col,.5), '#FFFFFF'], RM ? 6 : 15, 4.4, { shape: motif === 'fire' ? 'ember' : motif === 'ice' ? 'flake' : motif === 'claw' ? 'shard' : 'star' }); ring(t, col, 54 + seed % 26, 2.6, 30); }, 150);
-    } else if (projectile) {
-      setTimeout(() => { orb(c, t, col, motif, { power:power * .85, size:.75 + (seed % 4) * .08, bend: seed % 2 ? 1 : -1 }); }, 80);
-    } else {
-      setTimeout(() => { beam(c, t, col, 2.5, 26); ring(t, col, 48 + seed % 28, 2.4, 30); burst(t, [col, lighten(col,.45)], RM ? 4 : 10, 3.1, { shape: motif === 'petal' ? 'petal' : 'star' }); }, 110);
-    }
-    return;
-  }
-  if (projectile && marks.length && marks[0] !== c) {
-    marks.forEach((pt, i) => setTimeout(() => { orb(c, pt, col, motif, { power:power * .6, size:.58, bend: (i % 2 ? 1 : -1) * (1 + seed % 2) }); }, i * (RM ? 0 : 90)));
-  } else {
-    setTimeout(() => { pillar(c, col); ring(c, col, 58 + seed % 30, 2.6, 34); motifFx(c, col, motif, RM ? 5 : 12); }, 100);
-  }
-}
 function genericFx(heroKey, ab, c, t, all) {
   const H = HEROES[heroKey]; const F = ab.face && H.faces ? H.faces.find(f => f.id === ab.face) : null;
   const col = H.great ? '#FF8AD8' : F ? COLORS[F.col].hex : heroColor(heroKey); const m = F ? F.motif : H.motif;
@@ -4945,55 +4579,8 @@ function motifSnd(m) {
   }
 }
 function abilitySound(heroKey, ab) {
-  const specific = SFX.ab[ab.id];
-  if (specific) specific();
-  else { const o = ab.ops && ab.ops[0] && ab.ops[0].op; const f = SFX.ab[OPSND[o]]; if (f) f(); }
-  const n = skillHash(heroKey + ':' + ab.id), H = HEROES[heroKey] || {}, motif = H.motif || 'star';
-  const base = 170 + (n % 13) * 19, step = .065 + ((n >>> 5) % 5) * .012;
-  if (motif === 'rock' || motif === 'claw') { noise(.12, { filter:'lowpass', f:500 + n % 800, f2:100 + n % 240, vol:.17 }); tone(base, .2, { type:'triangle', vol:.08, f2:base * .55, at:.04 }); }
-  else if (motif === 'ice' || motif === 'crystal') { tone(base * 5, .28, { type:'sine', vol:.075, f2:base * 3, at:.02 }); tone(base * 7, .24, { type:'triangle', vol:.045, at:step }); noise(.08, { f:5000 + n % 1200, q:7, vol:.1, at:.03 }); }
-  else if (motif === 'fire' || motif === 'blood') { noise(.16, { filter:'lowpass', f:1000 + n % 1500, f2:180, vol:.14 }); tone(base, .3, { type:'sawtooth', vol:.075, f2:base * .7, at:.035 }); }
-  else if (motif === 'void' || motif === 'smoke') { tone(base * .55, .46, { type:'sawtooth', vol:.075, f2:base * 1.5 }); tone(base * .57, .42, { type:'sine', vol:.05, at:.045, f2:base * .8 }); }
-  else if (motif === 'water') { for (let i=0;i<3;i++) tone(base * (2 + i * .35), .16, { type:'sine', vol:.055, at:i * step, f2:base * (3 + i * .2) }); }
-  else if (motif === 'petal' || motif === 'feather') { arp([base * 3, base * 4, base * 5], step, { type:'triangle', vol:.045, dur:.22 }); noise(.11, { f:2200 + n % 1000, f2:800, vol:.06, at:.04 }); }
-  else { arp([base * 2, base * (2.5 + (n % 3) * .25), base * 3], step, { type:'triangle', vol:.05, dur:.25 }); }
-}
-function abilityWindupSound(heroKey, ab) {
-  if (!SND.on) return;
-  const n = skillHash(heroKey + ':' + ab.id), H = HEROES[heroKey] || {}, f = 105 + n % 170;
-  if (H.motif === 'rock' || H.motif === 'claw') noise(.12, { filter:'lowpass', f:260 + n % 300, f2:100, vol:.055 });
-  else if (H.motif === 'ice' || H.motif === 'crystal') tone(500 + n % 900, .18, { type:'sine', vol:.035, f2:950 + n % 1200 });
-  else if (H.motif === 'void' || H.motif === 'smoke') tone(f, .2, { type:'sine', vol:.04, f2:f * 1.5 });
-  else noise(.15, { f:220 + n % 700, f2:900 + n % 1200, q:1.2, vol:.045, attack:.05 });
-}
-const ZONE_SFX_AT = {};
-const ZONE_AUDIO = {
-  fire: { motif:'fire', place:'burn' }, ice: { motif:'crystal', place:'glass' }, crystal: { motif:'crystal', place:'glass' },
-  void: { motif:'void', place:'gravity' }, portal: { motif:'void', place:'portal' }, water: { motif:'water', place:'shell' },
-  web: { motif:'smoke', place:'roots' }, petal: { motif:'petal', place:'bless' }, rock: { motif:'rock', place:'stone' },
-  star: { motif:'star', place:'seal' }, blood: { motif:'blood', place:'purge' }, amber: { motif:'water', place:'roots' }, light: { motif:'star', place:'grace' },
-  camp: { motif:'rock', place:'camp' }
-};
-function zoneSound(z, phase, hero) {
-  const vis = ZVIS[z] || 'gen', profile = ZONE_AUDIO[vis] || { motif: HEROES[hero] && HEROES[hero].motif || 'card', place: 'seal' };
-  const key = phase + ':' + vis, now = Date.now();
-  if (now - (ZONE_SFX_AT[key] || 0) < (phase === 'hit' ? 420 : 260)) return;
-  ZONE_SFX_AT[key] = now;
-  if (phase === 'hit') { motifSnd(profile.motif); return; }
-  const sfx = profile.place === 'glass' ? SFX.glass : profile.place === 'burn' ? SFX.ab.burn : profile.place === 'portal' ? SFX.portal : SFX.ab[profile.place];
-  (sfx || SFX.chime)(); motifSnd(profile.motif);
-}
-function zoneImpactFx(pt, z, hero, power = 1) {
-  if (!pt) return;
-  const vis = ZVIS[z] || 'gen', col = zoneAccent(z, hero), n = Math.round(14 * power);
-  if (vis === 'fire') { burst(pt, ['#FF7048', '#FFC36B', col], n, 5 * power, { shape:'ember', g:-0.05 }); ring(pt, '#FFC36B', 62 * power, 3, 34); }
-  else if (vis === 'ice') { burst(pt, [col, '#EAFBFF', '#FFFFFF'], n, 5 * power, { shape:'flake' }); ring(pt, '#DDF8FF', 64 * power, 3, 36); }
-  else if (vis === 'crystal') { burst(pt, [col, '#FFFFFF', '#D4EEFF'], n, 5 * power, { shape:'shard' }); ring(pt, col, 60 * power, 3, 34); }
-  else if (vis === 'void' || vis === 'portal') { ringIn(pt, col, 86 * power, 36); spiral(pt, [col, '#171022', '#FFFFFF'], Math.round(16 * power)); }
-  else if (vis === 'water') { motifFx(pt, col, 'water', n); ring(pt, '#E0FAFF', 58 * power, 2, 34); }
-  else if (vis === 'web') { ring(pt, col, 58 * power, 3, 38); burst(pt, [col, '#EDE7FF'], n, 3 * power, { shape:'shard' }); }
-  else if (vis === 'rock') { rocks(pt, n); ring(pt, col, 54 * power, 4, 36); }
-  else { motifFx(pt, col, vis, n); ring(pt, col, 58 * power, 3, 34); }
+  if (SFX.ab[ab.id]) { SFX.ab[ab.id](); return; }
+  const o = ab.ops && ab.ops[0] && ab.ops[0].op; const f = SFX.ab[OPSND[o]]; if (f) f(); const F = ab.face && HEROES[heroKey].faces ? HEROES[heroKey].faces.find(x => x.id === ab.face) : null; motifSnd(F ? F.motif : HEROES[heroKey].motif);
 }
 
 async function playFx(e, s) {
@@ -5008,14 +4595,8 @@ async function playFx(e, s) {
     case 'meet': await showMeet(e, s); break;
     case 'meetHit': { const col = heroColor(e.foe); const pt = screenOfP(e.p); impact(pt, col, HEROES[e.foe].motif, e._me === false ? 0.5 : 0.85); motifFx(pt, col, HEROES[e.foe].motif, 18); await sleep(e._me === false ? 180 : 360); break; }
     case 'offer': { if (e._me === false) break; const b = bxOf(e.foe, e.ab); banner(e.foe, e.yes ? 'Согласие' : 'Отказ', HEROES[e.foe].name + ': «' + b.name + '»', heroColor(e.foe)); await sleep(900); break; }
-    case 'zone': {
-      renderZones(); const col = zoneAccent(e.z, e.hero); const ids = (e.cells || []).slice(0, 28); const pts = ids.map(screenOfCell).filter(Boolean); const vis = ZVIS[e.z] || 'gen';
-      zoneSound(e.z, 'place', e.hero);
-      if (vis === 'void' || vis === 'portal') portalFx(screenOfP(e.owner), col, RM ? 26 : 52);
-      pts.forEach((pt, i) => setTimeout(() => zoneImpactFx(pt, e.z, e.hero, 0.52), RM ? 0 : i * 34));
-      await sleep(e._me === false ? 240 : Math.min(1250, 300 + pts.length * (RM ? 0 : 34))); break;
-    }
-    case 'zoneHit': { const col = zoneAccent(e.z, e.hero); const pt = screenOfP(e.p); zoneSound(e.z, 'hit', e.hero); zoneImpactFx(pt, e.z, e.hero, 0.8); floatAt(e.p, (ZK[e.z] || {}).icon || '!', col); await sleep(450); break; }
+    case 'zone': { renderZones(); const col = heroColor(e.hero); const pts = (e.cells || []).slice(0, 14).map(screenOfCell).filter(Boolean); pts.forEach((pt, i) => setTimeout(() => ring(pt, col, 40, 3), i * 40)); SFX.chime(); await sleep(e._me === false ? 250 : 600); break; }
+    case 'zoneHit': { const col = heroColor(e.hero); const pt = screenOfP(e.p); impact(pt, col, HEROES[e.hero].motif, 0.6); motifFx(pt, col, HEROES[e.hero].motif, 16); floatAt(e.p, (ZK[e.z] || {}).icon || '!', col); await sleep(450); break; }
     case 'zoneEnd': renderZones(); break;
     case 'loseHero': { if (e._me === false) { burst(screenOfP(e.p), ['#C9B0FF', '#FFFFFF'], 14, 4); await sleep(250); break; } banner(e.hero, HEROES[e.hero].name + ' потерян', HEROES[e.by].name + ' забирает героя у игрока ' + P(e.p).name, heroColor(e.by)); await sleep(1000); break; }
     case 'horde': await showHorde(e, s); break;
@@ -5059,10 +4640,10 @@ async function playFx(e, s) {
     case 'wildAll': { if (e._me === false) break; const col = heroColor(e.foe); flash(col + '55'); banner(e.foe, HEROES[e.foe].name + ' ' + e.msg, 'Сила души бьёт по игроку ' + P(e.p).name, col); abilitySound(e.foe, HEROES[e.foe].ab[0]); await sleep(700); break; }
     case 'battlePass': { if (e._me === false) break; const col = heroColor(e.foe); banner(e.foe, P(e.p).name + ' проходит мимо', HEROES[e.foe].name + ' остаётся в подземелье', col); await sleep(900); break; }
     case 'wildHit': { const col = heroColor(e.foe); const pt = screenOfP(e.p); motifFx(pt, col, HEROES[e.foe].motif, 24); ring(pt, col, 60, 4); await sleep(450); break; }
-     case 'recruit': { if (e._me === false) break; SFX.summon(heroTier(e.hero)); const col = heroColor(e.hero); banner(e.hero, HEROES[e.hero].name + ' присоединяется', e.full ? 'Рука полна: выбери, кого отпустить' : 'Душа побеждена и забрана', col); heroSignatureFx(e.hero, screenOfP(e.p), HEROES[e.hero].great ? 1.35 : 0.8); motifSnd(HEROES[e.hero].motif || 'star'); await sleep(1100); animateHeroArrival(e.hero); break; }
+    case 'recruit': { if (e._me === false) break; SFX.summon(heroTier(e.hero)); const col = heroColor(e.hero); banner(e.hero, HEROES[e.hero].name + ' присоединяется', e.full ? 'Рука полна: выбери, кого отпустить' : 'Душа побеждена и забрана', col); burst(screenOfP(e.p), [col, '#FFFFFF'], 36, 6, { shape: 'star' }); await sleep(1100); break; }
     case 'status': floatAt(e.p, e.msg, '#C9BFE3'); await sleep(450); break;
     case 'auraTick': floatAt(e.p, '✦ +' + e.amount, '#F3DDA0'); spiral(screenOfP(e.p), ['#F3DDA0', '#FFFFFF'], 16); await sleep(500); break;
-     case 'takeHero': { if (e._me === false) { beam(screenOfP(e.from), screenOfP(e.p), '#C9B0FF', 3, 20); await sleep(300); break; } const col = heroColor(e.hero); beam(screenOfP(e.from), screenOfP(e.p), col, 4, 30); banner(e.hero, HEROES[e.hero].name + ' вырван из руки', P(e.from).name + ' → ' + P(e.p).name, col); await sleep(1100); animateHeroArrival(e.hero); break; }
+    case 'takeHero': { if (e._me === false) { beam(screenOfP(e.from), screenOfP(e.p), '#C9B0FF', 3, 20); await sleep(300); break; } const col = heroColor(e.hero); beam(screenOfP(e.from), screenOfP(e.p), col, 4, 30); banner(e.hero, HEROES[e.hero].name + ' вырван из руки', P(e.from).name + ' → ' + P(e.p).name, col); await sleep(1100); break; }
     case 'shuffle': SFX.ab.swap(); banner('marrek', 'Карты перетасованы', 'Руки всех игроков перемешаны', '#E5484D'); await sleep(1200); break;
     case 'orbit': { for (const m of e.moves) { const a = screenOfP(m.p); G.disp[m.p] = m.to; renderTokens(); const b = screenOfP(m.p); beam(a, b, '#C9B0FF', 3, 30); } SFX.ab.gravity(); await sleep(900); break; }
     case 'poisonTick': floatAt(e.p, '−' + e.amount + ' (яд)', '#7BE0A4'); motifFx(screenOfP(e.p), '#3FBF7F', 'smoke', 14); await sleep(600); break;
@@ -5075,22 +4656,16 @@ async function playFx(e, s) {
       const p = P(e.p); const H = HEROES[e.hero]; const ab = H.ab.find(x => x.id === e.ab); const t = e.target ? P(e.target) : null;
       if (e._me === false) { // чужое дело: только короткий эффект на поле
         const c = screenOfP(p.id), tp = t ? screenOfP(t.id) : null; const all = s.players.filter(q => q.id !== p.id && !q.place).map(q => screenOfP(q.id));
-        abilityWindupFx(e.hero, ab, c); abilityWindupSound(e.hero, ab);
-        await sleep(RM ? 35 : 130);
-        abilitySound(e.hero, ab);
         if (ABV[e.ab]) ABV[e.ab](c, tp, all); else genericFx(e.hero, ab, c, tp, all);
-        abilitySignatureFx(e.hero, ab, c, tp, all, 0.55);
         await sleep(450); break;
       }
       await castCard(e.hero, ab.name, p.name + (t && t.id !== p.id ? ' против ' + t.name : ''), e.copy, ab.face);
       if (t) focusCell(G.disp[t.id] ?? t.pos); else focusCell(G.disp[p.id] ?? p.pos);
-      const c = screenOfP(p.id), tp = t ? screenOfP(t.id) : null;
-      abilityWindupFx(e.hero, ab, c); abilityWindupSound(e.hero, ab);
-      await sleep(RM ? 40 : 180);
+      await sleep(250);
       abilitySound(e.hero, ab);
+      const c = screenOfP(p.id), tp = t ? screenOfP(t.id) : null;
       const all = s.players.filter(q => q.id !== p.id && !q.place).map(q => screenOfP(q.id));
-        if (ABV[e.ab]) ABV[e.ab](c, tp, all); else genericFx(e.hero, ab, c, tp, all);
-        abilitySignatureFx(e.hero, ab, c, tp, all, 0.75);
+      if (ABV[e.ab]) ABV[e.ab](c, tp, all); else genericFx(e.hero, ab, c, tp, all);
       renderDock();
       await sleep(850); break;
     }
@@ -5104,8 +4679,8 @@ async function playFx(e, s) {
     case 'steal': floatAt(e.from, '−' + e.amount, '#FF8A96'); floatAt(e.p, '+' + e.amount, '#8FE3FF'); SFX.coin(); await sleep(600); break;
     case 'swap': { const a = screenOfP(e.a), b = screenOfP(e.b); beam(a, b, '#C9B0FF', 4); beam(b, a, '#C9B0FF', 4); G.disp[e.a] = e.pa; G.disp[e.b] = e.pb; renderTokens(); await sleep(350); focusCell(e.pa); await sleep(450); break; }
     case 'burnHero': { if (e._me === false) { burst(screenOfP(e.p), ['#FF7A50', '#FFD27A'], 16, 4, { g: -0.06 }); await sleep(300); break; } const pl = P(e.p); SFX.burn(); banner(e.hero, HEROES[e.hero].name + (e.verb ? ' ' + e.verb : ' сгорает'), 'У игрока ' + pl.name + (e.why ? ', ' + e.why : ''), '#FF7A50'); burst(screenOfP(e.p), ['#FF7A50', '#FFD27A'], 30, 6, { g: -0.06 }); await sleep(900); break; }
-     case 'revive': if (e._me === false) break; SFX.ab.revive(); banner(e.hero, HEROES[e.hero].name + ' возвращается', P(e.p).name, heroColor(e.hero)); heroSignatureFx(e.hero, screenOfP(e.p), 0.9); await sleep(900); animateHeroArrival(e.hero); break;
-     case 'summon': await showSummon(e, s); if (e._me !== false) animateHeroArrival(e.hero); break;
+    case 'revive': if (e._me === false) break; SFX.ab.revive(); banner(e.hero, HEROES[e.hero].name + ' возвращается', P(e.p).name, '#FF9AC8'); pillar(screenOfP(e.p), '#FF9AC8'); await sleep(900); break;
+    case 'summon': await showSummon(e, s); break;
     case 'skip': SFX.skip(); floatAt(e.p, 'Пропуск хода', '#C9BFE3'); burst(screenOfP(e.p), '#3FBF7F', 16, 3); await sleep(850); break;
     case 'markTick': floatAt(e.p, '−' + e.amount + ' (метка)', '#B58CFF'); ringIn(screenOfP(e.p), '#B58CFF', 60, 30); await sleep(600); break;
     case 'camp': SFX.coin(); floatAt(e.p, '−' + e.amount + ' (лагерь)', '#FFB86B'); await sleep(600); break;
@@ -5120,7 +4695,6 @@ async function playFx(e, s) {
 // ===================== Dock =====================
 function renderTop() {
   const s = G.s; if (!s) return;
-  setSoundscapeMood();
   const ev = EVENTS.find(e => e.id === s.event); $('evchip').textContent = '✧ ' + ev.name;
   const wc = $('wchip'); if (s.world && OMENS[s.world.k]) { const O = OMENS[s.world.k]; wc.hidden = false; wc.textContent = '🎴 ' + O.name + ' · ' + s.world.left; wc.title = O.name + ': ещё кругов — ' + s.world.left; wc.style.setProperty('--wc', O.col); } else wc.hidden = true;
   const rc = $('roomchip'); if (G.mode === 'online' && NET.code) { rc.hidden = false; rc.textContent = '🔑 ' + NET.code; rc.title = 'Код комнаты'; } else rc.hidden = true;
@@ -5156,7 +4730,7 @@ function renderDock() {
   else if (zc === 1) au.appendChild(h('div', { class: 'auraline l0' }, h('span', null, 'Собери в руке второй знак зодиака, чтобы зажечь созвездие.')));
   famActive(v).forEach(f => { const F = FAMS[f], l = famLv(v, f), n = famCount(v, f); au.appendChild(h('div', { class: 'auraline fam f' + l, style: '--fc:' + F.col }, h('b', null, '⚜ ' + F.name + ': ' + n + ' души'), h('span', null, scl(F.lv[l - 1])))); });
   const hand = $('hand'); const handN = []; hand.className = HAND > 4 ? 'h' + HAND : '';
-   { const mini = dockMini(); $('dock').classList.toggle('mini', mini); $('bMini').textContent = mini ? '▴ показать карты' : '▾ скрыть карты'; $('bMini').setAttribute('aria-label', mini ? 'Показать карты' : 'Скрыть карты'); $('bMini').setAttribute('aria-expanded', String(!mini)); }
+  { const mini = dockMini(); $('dock').classList.toggle('mini', mini); $('bMini').textContent = mini ? '▴ показать карты' : '▾ скрыть карты'; $('bMini').setAttribute('aria-label', mini ? 'Показать карты' : 'Скрыть карты'); }
   for (let i = 0; i < HAND; i++) {
     const hh = v.hand[i];
     if (!hh) { handN.push(h('div', { class: 'hslot' }, i === 0 && !v.hand.length ? 'Призови первого героя' : 'Пусто')); continue; }
@@ -5164,7 +4738,7 @@ function renderDock() {
     const fk = FAM_OF[hh.k]; const fl = fk ? famLv(v, fk) : 0;
     const lockedC = hh.lock > 0 || hh.mute || (v.st.shadowMark && FAM_OF[hh.k] === 'shadows');
     const lf = hh.mute ? 'mute' : hh.lock > 0 ? (hh.lock > 100 ? 'crystal' : hh.lockFx || 'chain') : 'shadow';
-     handN.push(h('button', { class: 'hcard m-' + (H.motif || 'star') + (lockedC ? ' locked lf-' + lf : '') + (H.great ? ' great' : '') + (z && lvl ? ' zaura l' + lvl : '') + (fl ? ' faura' : ''), 'data-hk': hh.k, style: '--hc:' + heroColor(hh.k) + (fk ? ';--fc:' + FAMS[fk].col : ''), 'aria-label': H.name, onclick: () => { const vv = viewer(), x = vv && vv.hand[i]; if (x) cardSheet(vv, x); } },
+    handN.push(h('button', { class: 'hcard' + (lockedC ? ' locked lf-' + lf : '') + (H.great ? ' great' : '') + (z && lvl ? ' zaura l' + lvl : '') + (fl ? ' faura' : ''), style: '--hc:' + heroColor(hh.k) + (fk ? ';--fc:' + FAMS[fk].col : ''), 'aria-label': H.name, onclick: () => { const vv = viewer(), x = vv && vv.hand[i]; if (x) cardSheet(vv, x); } },
       h('img', { src: IMG[hh.k].card, alt: '' }), h('span', { class: 'pw' }, '⚔ ' + pw), H.rank ? h('span', { class: 'rk', title: 'Класс ' + H.rank }, H.rank) : null, z ? h('span', { class: 'zs' }, z) : null, H.faces ? h('span', { class: 'flipb' }, '⇄') : null, !z && FAM_OF[hh.k] ? h('span', { class: 'fs', title: FAMS[FAM_OF[hh.k]].name }) : null, h('span', { class: 'nm' }, H.name), lockedC ? h('span', { class: 'lk ' + lf }, h('b', null, LOCK_ICON[lf] || '🔒'), hh.lock > 0 && hh.lock < 100 ? h('small', null, hh.lock + ' кр.') : null) : null));
   }
   syncKids(hand, handN);
@@ -5178,14 +4752,6 @@ function renderDock() {
   if (G.mode === 'online' && NET.isHost && s.status === 'playing' && a.id !== NET.myId && !a.bot && !G.playing && !G.busy)
     ex.appendChild(h('button', { class: 'abtn alt', id: 'hostskip', onclick: () => confirmBox('Пропустить ход?', 'Если ' + a.name + ' не отвечает, можно пропустить его ход.', 'Пропустить', () => doAct({ type: 'forceSkip', by: NET.myId })) }, 'Пропустить ход игрока ' + a.name));
   setDockVar();
-}
-function animateHeroArrival(k) {
-  renderDock();
-  const cards = Array.from($('hand').querySelectorAll('.hcard'));
-  const card = cards.filter(c => c.dataset.hk === k).pop();
-  if (!card) return;
-  card.classList.remove('arrive'); void card.offsetWidth; card.classList.add('arrive');
-  setTimeout(() => card.classList.remove('arrive'), 900);
 }
 $('bDice').onclick = () => { SFX.click(); doAct({ type: 'roll' }); };
 $('bMini').onclick = () => { SFX.click(); const s = G.s; const me = s && s.players.find(x => x.id === meId()); const myTurn = s && me && activeP(s).id === me.id; if (store.get('autoMini', false) && !myTurn && !store.get('dockMini', false)) { store.set('autoMini', false); } else store.set('dockMini', !store.get('dockMini', false)); renderDock(); };
@@ -5230,14 +4796,9 @@ function cardSheet(owner, hh, face) {
     const ar = areaReach(s, owner, ab);
     const noT = mineNow && ((ab.t !== 'none' && !validTargets(s, owner, ab).length) || (ar && !ar.who.length));
     const rr = ar ? ar.r : ab.r >= 99 ? 0 : abR(ab) + rangeBonus(s, owner);
-    const hasZone = (ab.ops || []).some(o => o.op === 'zone');
-    const btn = h('button', { class: 'abtn', disabled: !mineNow || !!blocked || noT, onclick: () => pickAbility(owner, hh, ab) }, noT ? (ar ? 'В области никого нет' : 'Нет цели ' + (ab.rows != null ? rowsPhrase(ab.rows) : 'в пределах ' + rr + ' клеток')) : hasZone ? 'Показать область' : 'Применить и сжечь карту');
+    const btn = h('button', { class: 'abtn', disabled: !mineNow || !!blocked || noT, onclick: () => pickAbility(owner, hh, ab) }, noT ? (ar ? 'В области никого нет' : 'Нет цели ' + (ab.rows != null ? rowsPhrase(ab.rows) : 'в пределах ' + rr + ' клеток')) : 'Применить и сжечь карту');
     const reach = ar && mineNow ? h('small', { class: 'reach' }, ar.who.length ? 'Сейчас достанет: ' + ar.who.map(q => q.name + ' (клетка ' + (q.pos + 1) + ')').join(', ') : 'Сейчас в области никого нет.') : null;
-    const hue = F ? COLORS[F.col].hex : heroColor(hh.k);
-    list.appendChild(h('div', { class: 'abrow', style: '--skill:' + hue },
-      h('div', { class: 'abrow-main' },
-        h('span', { class: 'skill-mark', 'aria-hidden': 'true' }, skillGlyph(ab, H.motif)),
-        h('div', { class: 'skill-copy' }, h('b', null, ab.name), h('span', null, abDesc(ab)), reach)), btn));
+    list.appendChild(h('div', { class: 'abrow' }, h('b', null, ab.name), h('span', null, abDesc(ab)), reach, btn));
   });
   const lvl = auraLevel(owner); const z = ZSIGN[hh.k];
   const note = !mineNow ? 'Способности можно применять в свой ход до броска кубиков.' : blocked ? blocked : 'Пока герой в руке, он добавляет ' + pw + ' к силе в боях. После применения способности он сгорит.';
@@ -5288,8 +4849,7 @@ function pickAbility(p, hh, ab) {
     const g = h('div', { class: 'num11' });
     for (let i = 2; i <= 12; i++) g.appendChild(h('button', { onclick: () => doAct(Object.assign({}, base, { value: i })) }, String(i)));
     openModal(ab.name, 'Сколько выпадет на кубиках? Потом нажми «Бросить».', h('div', null, g, h('div', { class: 'mact' }, h('button', { class: 'abtn alt', onclick: closeModal }, 'Отмена'))), { center: true });
-  } else if ((ab.ops || []).some(o => o.op === 'zone')) previewTerritory(p, hh, ab, base);
-  else doAct(base);
+  } else doAct(base);
 }
 function openPhasePrompt() {
   const s = G.s; if (!canControl()) return; const p = activeP(s);
@@ -5333,18 +4893,10 @@ function showRules() {
     h('div', { class: 'mact' }, h('button', { class: 'abtn', onclick: closeModal }, 'Понятно')));
   openModal('Как играть', null, c);
 }
-function showSoundSettings() {
-  const rows=[['musicLevel','Музыка',SND.musicLevel],['ambienceLevel','Атмосфера подземелья',SND.ambienceLevel],['fxLevel','Звуки действий',SND.fxLevel]];
-  const controls=rows.map(([key,label,value])=>h('label',{class:'sound-slider'},
-    h('span',null,label,h('output',null,Math.round(value*100)+'%')),
-    h('input',{type:'range',min:'0',max:'1',step:'.01',value:String(value),'aria-label':label,oninput:e=>{SND[key]=+e.target.value;store.set(key,SND[key]);e.currentTarget.previousSibling.lastChild.textContent=Math.round(SND[key]*100)+'%';applySoundLevels();}})));
-  openModal('Звук и атмосфера','Настрой громкость музыки, окружения и игровых эффектов отдельно.',h('div',null,...controls,h('div',{class:'mact'},h('button',{class:'abtn',onclick:closeModal},'Готово'))));
-}
 function showMenu() {
   openModal('Меню', null, h('div', { class: 'mlist' },
     h('button', { class: 'mopt', onclick: showRules }, h('span', null, 'Как играть')),
     h('button', { class: 'mopt', onclick: showLog }, h('span', null, 'Журнал партии')),
-    h('button', { class: 'mopt', onclick: showSoundSettings }, h('span', null, 'Звук и атмосфера')),
     h('button', { class: 'mopt', onclick: () => { store.set('autoMini', !store.get('autoMini', false)); closeModal(); renderDock(); toast(store.get('autoMini', false) ? 'Карты будут прятаться в чужой ход.' : 'Карты больше не прячутся сами.'); } }, h('span', null, store.get('autoMini', false) ? 'Не прятать карты в чужой ход' : 'Прятать карты в чужой ход')),
     G.mode === 'online' && NET.isHost && G.s ? h('button', { class: 'mopt', onclick: () => { closeModal(); const hs = G.s.players.filter(q => !q.bot && q.id !== NET.myId); if (!hs.length) { toast('Других игроков нет.'); return; } openModal('Убрать игрока', 'За убранного игрока дальше будет играть бот, а вернуться в комнату он не сможет.', h('div', { class: 'mlist' }, ...hs.map(q => h('button', { class: 'mopt', onclick: () => { closeModal(); confirmBox('Убрать ' + q.name + '?', 'Его место займёт бот.', 'Убрать', () => kickPlayer(q.id)); } }, h('span', null, q.name))), h('button', { class: 'abtn alt', onclick: closeModal }, 'Отмена'))); } }, h('span', null, 'Убрать игрока')) : null,
     h('button', { class: 'mopt', onclick: () => { closeModal(); confirmBox('Выйти в меню?', G.mode === 'online' ? (NET.isHost ? 'Ты создатель комнаты: партия закончится у всех.' : 'Вернуться можно по коду комнаты.') : 'Текущая партия закончится.', 'Выйти', leaveGame); } }, h('span', null, 'Выйти в меню')),
@@ -5442,14 +4994,13 @@ $('setupGo').onclick = () => {
 };
 $('bRules').onclick = showRules;
 $('bMenu').onclick = showMenu;
-$('bSound').onclick = () => { SND.on = !SND.on; store.set('sound', SND.on); audioInit(); applySoundLevels(); renderTop(); if (SND.on) SFX.chime(); };
+$('bSound').onclick = () => { SND.on = !SND.on; store.set('sound', SND.on); audioInit(); renderTop(); if (SND.on) SFX.chime(); };
 $('wchip').onclick = () => { if (!G.s || !G.s.world) return; const k = G.s.world.k, O = OMENS[k]; openModal(O.name, null, h('div', null, h('img', { src: IMG[k].card, alt: O.name, style: 'display:block;width:min(56vw,200px);margin:0 auto 10px;border-radius:12px;box-shadow:0 0 30px ' + O.col }), h('p', null, h('i', null, O.title + '. ')), h('p', null, omenDesc(k)), h('p', { style: 'color:#C9BFE3' }, 'Осталось кругов: ' + G.s.world.left + '.'), h('div', { class: 'mact' }, h('button', { class: 'abtn', onclick: closeModal }, 'Понятно'))), { center: true }); };
 $('evchip').onclick = () => { if (!G.s) return; const ev = EVENTS.find(e => e.id === G.s.event); openModal(ev.name, ev.desc, h('div', { class: 'mact' }, h('button', { class: 'abtn', onclick: closeModal }, 'Понятно')), { center: true }); };
 addEventListener('resize', () => { setDockVar(); if (G.s && MAP.key) { renderBoard(G.s.seed, G.s.event); renderTokens(); renderMarks(); } });
 
 async function doAct(a) {
   if (G.busy || G.playing || !G.s) return;
-  if (ACTIVE_ZONE_PREVIEW) clearZonePreview();
   a.by = a.by || activeP(G.s).id;
   if (G.mode === 'online' && !NET.isHost) {
     closeModal(); G.busy = true; renderDock();
