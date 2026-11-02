@@ -585,6 +585,33 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
   #zpeek{backdrop-filter:blur(12px)}
 }
 @media (prefers-reduced-motion:reduce){.hcard,.mopt,.tile>div{transition:none}}
+.tile-face{position:relative;isolation:isolate;overflow:hidden;background-color:var(--tb);background-image:linear-gradient(155deg,rgba(255,255,255,.1),transparent 38%,rgba(0,0,0,.35)),radial-gradient(ellipse at 50% 0%,rgba(183,155,197,.16),transparent 66%)}
+.tile-face::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.42;background-image:var(--stone);background-size:100% 100%;mix-blend-mode:screen}
+.stone-v0 .tile-face{--stone:url('assets/textures/dungeon/stone-grain-a.svg')}.stone-v1 .tile-face{--stone:url('assets/textures/dungeon/stone-grain-b.svg')}.stone-v2 .tile-face{--stone:url('assets/textures/dungeon/stone-grain-c.svg')}
+.tile-face::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.18;background:linear-gradient(130deg,transparent 38%,rgba(255,255,255,.22) 39%,transparent 41%),linear-gradient(24deg,transparent 62%,rgba(0,0,0,.55) 63%,transparent 65%);mix-blend-mode:screen}
+.tile-glyph{position:relative;z-index:1;width:68%;height:68%;overflow:visible;filter:drop-shadow(0 2px 2px rgba(0,0,0,.75)) drop-shadow(0 0 5px var(--tile-glow,transparent));transition:transform .2s,filter .2s}
+.tile:hover .tile-glyph{transform:translateY(-2px) scale(1.07)}
+.tile .n{z-index:2;left:4px;top:3px;min-width:15px;text-align:center;border-radius:5px;padding:1px 3px;background:rgba(8,8,15,.62);color:rgba(255,248,231,.76);font:700 9px/1.3 system-ui,sans-serif;text-shadow:0 1px 3px #000}
+.tile-word{position:absolute;z-index:2;bottom:3px;left:3px;right:3px;text-align:center;color:#fff0c4;font:700 8px/1 system-ui,sans-serif;letter-spacing:.15em;text-shadow:0 1px 4px #08070c}
+.tile.treasure{--tile-glow:#ffc84e}.tile.treasure .tile-face{background-image:radial-gradient(ellipse at 50% 55%,rgba(255,199,73,.34),transparent 64%),linear-gradient(145deg,#54462f,#302516)}
+.tile.treasure .tile-face::after{opacity:.48;background:linear-gradient(32deg,transparent 0 35%,rgba(255,219,111,.62) 36%,transparent 38% 70%,rgba(255,201,72,.36) 71%,transparent 73%)}
+.tile.battle{--tile-glow:#ff455a}.tile.battle .tile-face{background-image:radial-gradient(ellipse at 50% 50%,rgba(181,25,50,.36),transparent 68%),linear-gradient(145deg,#45222c,#24171f)}
+.tile.trap{--tile-glow:#cb4e64}.tile.trap .tile-face{background-image:radial-gradient(circle at 50% 55%,rgba(185,34,58,.32),transparent 63%),linear-gradient(145deg,#39212e,#1b1721)}
+.tile.omen{--tile-glow:#9c83ff}.tile.omen .tile-face{background-image:radial-gradient(circle at 50% 48%,rgba(147,121,255,.28),transparent 68%),linear-gradient(145deg,#31264b,#19162a)}
+.tile.altar{--tile-glow:#72dfff}.tile.altar .tile-face{background-image:radial-gradient(ellipse at 50% 72%,rgba(92,222,255,.25),transparent 62%),linear-gradient(145deg,#273346,#171a29)}
+.tile.portal{--tile-glow:#68e4ff}.tile.portal .tile-face{background-image:radial-gradient(circle at 50% 50%,rgba(92,221,255,.34),rgba(94,56,169,.18) 42%,transparent 70%),linear-gradient(145deg,#1f3442,#151625)}
+.tile.collapse{--tile-glow:#ff744c}.tile.collapse .tile-face{background-image:radial-gradient(ellipse at 50% 55%,rgba(213,59,39,.32),transparent 60%),repeating-linear-gradient(135deg,#322229 0 7px,#17151d 8px 12px)}
+.tile.shrine{--tile-glow:var(--sc)}.tile.shrine .tile-face{background-image:radial-gradient(circle, color-mix(in srgb,var(--sc) 38%,transparent),transparent 69%),linear-gradient(145deg,#283139,#191823)}
+.tile.start{--tile-glow:#edc875}.tile.finish{--tile-glow:#fff3b5}.tile.finish .tile-face{background-image:radial-gradient(circle,rgba(255,246,193,.36),transparent 67%),linear-gradient(145deg,#4d4230,#211b24)}
+.tile.blank .tile-glyph{display:none}
+.tile.act-target .tile-face{outline:2px solid rgba(255,255,255,.85);outline-offset:-3px}
+.tile:focus-visible .tile-face{outline:2px solid #e9d18e;outline-offset:-3px}
+.sound-slider{display:grid;gap:7px;padding:12px;margin:8px 0;background:linear-gradient(130deg,#29213c,#181428);border:1px solid rgba(233,205,144,.22);border-radius:13px;color:var(--ink)}
+.sound-slider>span{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.sound-slider output{color:var(--gold2);font-variant-numeric:tabular-nums}
+.sound-slider input{width:100%;accent-color:#d8b86f}
+@media (max-width:979px),(max-height:559px){.tile-glyph{width:70%;height:70%}.tile .n{font-size:8px}.tile-word{font-size:7px}.tile-face::before{opacity:.32}}
+@media (prefers-reduced-motion:reduce){.tile-glyph{transition:none}}
 </style>
 </head>
 <body>
@@ -3898,10 +3925,39 @@ function avatarEl(p, cls) {
 }
 
 // ===================== Sound (Web Audio synthesis) =====================
-const SND = { ctx: null, on: store.get('sound', true), master: null };
+const SND = { ctx:null, on:store.get('sound',true), master:null, fx:null, music:null, ambience:null, fxLevel:store.get('fxLevel',.72), musicLevel:store.get('musicLevel',.18), ambienceLevel:store.get('ambienceLevel',.12), bed:[], mood:'' };
 function audioInit() {
-  if (SND.ctx) { if (SND.ctx.state === 'suspended') SND.ctx.resume(); return; }
-  try { const C = window.AudioContext || window.webkitAudioContext; SND.ctx = new C(); SND.master = SND.ctx.createGain(); SND.master.gain.value = 0.55; SND.master.connect(SND.ctx.destination); } catch (e) { }
+  if (SND.ctx) { if (SND.ctx.state === 'suspended') SND.ctx.resume(); applySoundLevels(); return; }
+  try {
+    const C = window.AudioContext || window.webkitAudioContext; SND.ctx = new C();
+    SND.master = SND.ctx.createGain(); SND.master.gain.value = .8; SND.master.connect(SND.ctx.destination);
+    SND.fx = SND.ctx.createGain(); SND.music = SND.ctx.createGain(); SND.ambience = SND.ctx.createGain();
+    SND.fx.connect(SND.master); SND.music.connect(SND.master); SND.ambience.connect(SND.master);
+    startSoundscape(); applySoundLevels(); setSoundscapeMood();
+  } catch (e) { }
+}
+function applySoundLevels() {
+  if (!SND.ctx) return;
+  const now = SND.ctx.currentTime;
+  if (SND.fx) SND.fx.gain.setTargetAtTime(SND.on ? SND.fxLevel : 0, now, .06);
+  if (SND.music) SND.music.gain.setTargetAtTime(SND.on ? SND.musicLevel : 0, now, .12);
+  if (SND.ambience) SND.ambience.gain.setTargetAtTime(SND.on ? SND.ambienceLevel : 0, now, .15);
+}
+function startSoundscape() {
+  if (!SND.ctx || SND.bed.length) return;
+  const c = SND.ctx;
+  [0,1,2].forEach(i => { const o=c.createOscillator(), g=c.createGain(); o.type=i===0?'triangle':'sine'; g.gain.value=[.22,.10,.035][i]; o.connect(g); g.connect(SND.music); o.start(); SND.bed.push(o); });
+  const buffer=c.createBuffer(1,c.sampleRate*2,c.sampleRate), data=buffer.getChannelData(0);
+  for(let i=0;i<data.length;i++) data[i]=Math.random()*2-1;
+  const src=c.createBufferSource(), filter=c.createBiquadFilter(), gain=c.createGain(); src.buffer=buffer; src.loop=true; filter.type='lowpass'; filter.frequency.value=340; filter.Q.value=.7; gain.gain.value=.13; src.connect(filter); filter.connect(gain); gain.connect(SND.ambience); src.start();
+}
+function setSoundscapeMood() {
+  if (!SND.ctx || SND.bed.length<3) return;
+  const inGame=$('game') && $('game').classList.contains('on'), s=G.s;
+  const mood=!inGame?'menu':s && s.status==='over'?'final':s && s.world?'dream':s && ['battle','pvp'].includes(s.phase)?'battle':'dungeon';
+  if (SND.mood===mood) return; SND.mood=mood;
+  const chords={menu:[55,82.41,110],dungeon:[49,73.42,98],dream:[65.41,98,130.81],battle:[58.27,87.31,116.54],final:[73.42,110,146.83]}[mood];
+  SND.bed.forEach((o,i)=>o.frequency.setTargetAtTime(chords[i],SND.ctx.currentTime,2.4));
 }
 document.addEventListener('pointerdown', audioInit);
 function tone(f, dur, o = {}) {
@@ -3912,7 +3968,7 @@ function tone(f, dur, o = {}) {
   if (o.detune) os.detune.value = o.detune;
   const v = o.vol == null ? 0.25 : o.vol, a = o.attack || 0.01;
   g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + a); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-  os.connect(g); g.connect(SND.master); os.start(t); os.stop(t + dur + 0.05);
+  os.connect(g); g.connect(SND.fx || SND.master); os.start(t); os.stop(t + dur + 0.05);
 }
 let NOISEBUF = null;
 function noise(dur, o = {}) {
@@ -3923,7 +3979,7 @@ function noise(dur, o = {}) {
   if (o.f2) fl.frequency.exponentialRampToValueAtTime(o.f2, t + dur);
   const g = c.createGain(); const v = o.vol == null ? 0.3 : o.vol;
   g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + (o.attack || 0.01)); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-  src.connect(fl); fl.connect(g); g.connect(SND.master); src.start(t); src.stop(t + dur + 0.05);
+  src.connect(fl); fl.connect(g); g.connect(SND.fx || SND.master); src.start(t); src.stop(t + dur + 0.05);
 }
 const arp = (fs, step, o) => fs.forEach((f, i) => tone(f, o.dur || 0.35, Object.assign({}, o, { at: (o.at || 0) + i * step })));
 const SFX = {
@@ -4159,6 +4215,13 @@ const TINFO = {
   omen: 'Знамение: открывается карта события, которая на три круга меняет подземелье для всех.'
 };
 function cellCenter(i) { const r = rowOf(i), c = colOf(i); return { x: c * MAP.cs + MAP.cs / 2, y: MAP.top + (ROWS - 1 - r) * MAP.cs + MAP.cs / 2 }; }
+const TILE_GLYPHS = { treasure:'gem', trap:'unknown', battle:'swords', altar:'altar', portal:'portal', collapse:'rift', shrine:'shrine', omen:'oracle', start:'stairs', finish:'dawn' };
+function tileGlyph(type) {
+  const id = TILE_GLYPHS[type]; if (!id) return null;
+  const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg'), use = document.createElementNS(ns, 'use');
+  svg.setAttribute('class','tile-glyph'); svg.setAttribute('viewBox','0 0 64 64'); svg.setAttribute('aria-hidden','true');
+  use.setAttribute('href','assets/ui/tile-symbols.svg#i-' + id); use.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href','assets/ui/tile-symbols.svg#i-' + id); svg.appendChild(use); return svg;
+}
 function renderBoard(seed, ev) {
   const B = buildBoard(seed, ev); MAP.B = B; MAP.key = seed + ':' + ev + ':' + CELLS;
   const sc = $('scroller'); const W = Math.min((sc.clientWidth || innerWidth) - 12, DESK() ? 740 : 560);
@@ -4169,10 +4232,11 @@ function renderBoard(seed, ev) {
   B.cells.forEach(c => {
     const r = rowOf(c.id), col = colOf(c.id); const z = ZONES[Math.min(4, Math.floor(r / ZROWS))];
     const tb = (r + col) % 2 ? z[0] : z[1];
-    const inner = h('div', null, TICON[c.type], h('span', { class: 'n' }, String(c.id + 1)));
+    const label = c.type === 'start' ? 'СОН' : c.type === 'finish' ? 'ЯВЬ' : null;
+    const inner = h('div', { class:'tile-face' }, tileGlyph(c.type), h('span', { class: 'n' }, String(c.id + 1)), label ? h('span', { class:'tile-word' }, label) : null);
     const rowEnd = (r % 2 === 0 && col === COLS - 1) || (r % 2 === 1 && col === 0);
     if (rowEnd && c.id < CELLS - 1) inner.appendChild(h('span', { class: 'turn' }, '⤴'));
-    const t = h('button', { class: 'tile ' + c.type, style: `left:${col * MAP.cs}px;top:${MAP.top + (ROWS - 1 - r) * MAP.cs}px;width:${MAP.cs}px;height:${MAP.cs}px;--tb:${tb}` + (c.type === 'shrine' ? `;--sc:${COLORS[c.color].hex}` : ''), 'aria-label': 'Клетка ' + (c.id + 1) }, inner);
+    const t = h('button', { class: 'tile ' + c.type + ' stone-v' + ((c.id * 7 + r) % 3), style: `left:${col * MAP.cs}px;top:${MAP.top + (ROWS - 1 - r) * MAP.cs}px;width:${MAP.cs}px;height:${MAP.cs}px;--tb:${tb}` + (c.type === 'shrine' ? `;--sc:${COLORS[c.color].hex}` : ''), 'aria-label': 'Клетка ' + (c.id + 1) }, inner);
     t.addEventListener('click', () => {
       let d = TINFO[c.type];
       if (c.type === 'shrine') d = 'Святилище, ' + COLORS[c.color].name + ' цвет: усиливает героя этого цвета в руке.';
@@ -4279,7 +4343,7 @@ function renderZones() {
   document.querySelectorAll('.zov').forEach(m => m.remove());
   (G.s.zones || []).forEach(z => { const owner = z.owner && G.s.players.find(p => p.id === z.owner); const col = owner ? owner.color : heroColor(z.hero); const K = ZK[z.z] || {}; const title = (owner ? owner.name + ' · ' : '') + (z.nm || K.name || 'Зона') + (z.left != null ? ' · ещё ' + z.left + ' круга' : ''); z.cells.forEach(i => { const t = MAP.tiles[i]; if (!t) return; t.firstChild.appendChild(h('span', { class: 'zov v-' + (z.vis || ZVIS[z.z] || 'gen') + (K.big ? ' big' : ''), style: '--zc:' + col, title, 'aria-hidden': 'true' }, h('i', null, z.icon || K.icon || '·'), z.left != null ? h('b', { class: 'zleft' }, String(z.left)) : null)); }); });
   const me = G.s.players.find(x => x.id === meId()); const dk = $('darkov'); if (dk) dk.classList.toggle('on', !!(me && me.st.dark > 0 && !me.place));
-  if (G.s.blank) Object.keys(G.s.blank).forEach(i => { const t = MAP.tiles[i]; if (t) { t.className = 'tile empty'; const ic = t.firstChild.firstChild; if (ic && ic.nodeType === 3) ic.textContent = ''; } });
+  if (G.s.blank) Object.keys(G.s.blank).forEach(i => { const t = MAP.tiles[i]; if (t) { t.className = 'tile empty blank'; const ic = t.querySelector('.tile-glyph'); if (ic) ic.hidden = true; } });
 }
 function renderTokens() {
   if (!G.s || !MAP.B) return;
@@ -5013,6 +5077,7 @@ async function playFx(e, s) {
 // ===================== Dock =====================
 function renderTop() {
   const s = G.s; if (!s) return;
+  setSoundscapeMood();
   const ev = EVENTS.find(e => e.id === s.event); $('evchip').textContent = '✧ ' + ev.name;
   const wc = $('wchip'); if (s.world && OMENS[s.world.k]) { const O = OMENS[s.world.k]; wc.hidden = false; wc.textContent = '🎴 ' + O.name + ' · ' + s.world.left; wc.title = O.name + ': ещё кругов — ' + s.world.left; wc.style.setProperty('--wc', O.col); } else wc.hidden = true;
   const rc = $('roomchip'); if (G.mode === 'online' && NET.code) { rc.hidden = false; rc.textContent = '🔑 ' + NET.code; rc.title = 'Код комнаты'; } else rc.hidden = true;
@@ -5225,10 +5290,18 @@ function showRules() {
     h('div', { class: 'mact' }, h('button', { class: 'abtn', onclick: closeModal }, 'Понятно')));
   openModal('Как играть', null, c);
 }
+function showSoundSettings() {
+  const rows=[['musicLevel','Музыка',SND.musicLevel],['ambienceLevel','Атмосфера подземелья',SND.ambienceLevel],['fxLevel','Звуки действий',SND.fxLevel]];
+  const controls=rows.map(([key,label,value])=>h('label',{class:'sound-slider'},
+    h('span',null,label,h('output',null,Math.round(value*100)+'%')),
+    h('input',{type:'range',min:'0',max:'1',step:'.01',value:String(value),'aria-label':label,oninput:e=>{SND[key]=+e.target.value;store.set(key,SND[key]);e.currentTarget.previousSibling.lastChild.textContent=Math.round(SND[key]*100)+'%';applySoundLevels();}})));
+  openModal('Звук и атмосфера','Настрой громкость музыки, окружения и игровых эффектов отдельно.',h('div',null,...controls,h('div',{class:'mact'},h('button',{class:'abtn',onclick:closeModal},'Готово'))));
+}
 function showMenu() {
   openModal('Меню', null, h('div', { class: 'mlist' },
     h('button', { class: 'mopt', onclick: showRules }, h('span', null, 'Как играть')),
     h('button', { class: 'mopt', onclick: showLog }, h('span', null, 'Журнал партии')),
+    h('button', { class: 'mopt', onclick: showSoundSettings }, h('span', null, 'Звук и атмосфера')),
     h('button', { class: 'mopt', onclick: () => { store.set('autoMini', !store.get('autoMini', false)); closeModal(); renderDock(); toast(store.get('autoMini', false) ? 'Карты будут прятаться в чужой ход.' : 'Карты больше не прячутся сами.'); } }, h('span', null, store.get('autoMini', false) ? 'Не прятать карты в чужой ход' : 'Прятать карты в чужой ход')),
     G.mode === 'online' && NET.isHost && G.s ? h('button', { class: 'mopt', onclick: () => { closeModal(); const hs = G.s.players.filter(q => !q.bot && q.id !== NET.myId); if (!hs.length) { toast('Других игроков нет.'); return; } openModal('Убрать игрока', 'За убранного игрока дальше будет играть бот, а вернуться в комнату он не сможет.', h('div', { class: 'mlist' }, ...hs.map(q => h('button', { class: 'mopt', onclick: () => { closeModal(); confirmBox('Убрать ' + q.name + '?', 'Его место займёт бот.', 'Убрать', () => kickPlayer(q.id)); } }, h('span', null, q.name))), h('button', { class: 'abtn alt', onclick: closeModal }, 'Отмена'))); } }, h('span', null, 'Убрать игрока')) : null,
     h('button', { class: 'mopt', onclick: () => { closeModal(); confirmBox('Выйти в меню?', G.mode === 'online' ? (NET.isHost ? 'Ты создатель комнаты: партия закончится у всех.' : 'Вернуться можно по коду комнаты.') : 'Текущая партия закончится.', 'Выйти', leaveGame); } }, h('span', null, 'Выйти в меню')),
@@ -5326,7 +5399,7 @@ $('setupGo').onclick = () => {
 };
 $('bRules').onclick = showRules;
 $('bMenu').onclick = showMenu;
-$('bSound').onclick = () => { SND.on = !SND.on; store.set('sound', SND.on); audioInit(); renderTop(); if (SND.on) SFX.chime(); };
+$('bSound').onclick = () => { SND.on = !SND.on; store.set('sound', SND.on); audioInit(); applySoundLevels(); renderTop(); if (SND.on) SFX.chime(); };
 $('wchip').onclick = () => { if (!G.s || !G.s.world) return; const k = G.s.world.k, O = OMENS[k]; openModal(O.name, null, h('div', null, h('img', { src: IMG[k].card, alt: O.name, style: 'display:block;width:min(56vw,200px);margin:0 auto 10px;border-radius:12px;box-shadow:0 0 30px ' + O.col }), h('p', null, h('i', null, O.title + '. ')), h('p', null, omenDesc(k)), h('p', { style: 'color:#C9BFE3' }, 'Осталось кругов: ' + G.s.world.left + '.'), h('div', { class: 'mact' }, h('button', { class: 'abtn', onclick: closeModal }, 'Понятно'))), { center: true }); };
 $('evchip').onclick = () => { if (!G.s) return; const ev = EVENTS.find(e => e.id === G.s.event); openModal(ev.name, ev.desc, h('div', { class: 'mact' }, h('button', { class: 'abtn', onclick: closeModal }, 'Понятно')), { center: true }); };
 addEventListener('resize', () => { setDockVar(); if (G.s && MAP.key) { renderBoard(G.s.seed, G.s.event); renderTokens(); renderMarks(); } });
