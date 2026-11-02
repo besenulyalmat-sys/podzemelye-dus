@@ -521,6 +521,70 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 @media (min-width:980px) and (min-height:560px){#zpeek{left:16px;right:406px;bottom:16px;max-width:none;margin:0 auto}}
 @media (max-width:979px),(max-height:559px){#zpeek{left:8px;right:8px;bottom:calc(var(--dockh,240px) + 8px);padding:9px 10px}#zpeek span{font-size:.8rem}#zpeek .zpeek-actions button{flex:1}}
 @media (prefers-reduced-motion:reduce){.zov.zpeek-preview{animation:none;filter:none}}
+/* ---------- Nightmare interface refresh ---------- */
+:root{--panel:#151126;--panel2:#211a36;--line:#554268;--gold:#d6b773;--gold2:#f5dfaa;--ink:#f3eee4;--ink2:#b9afc8}
+#game{background:radial-gradient(ellipse at 46% 40%,#29203c 0%,#161329 45%,#0e0d1a 100%)}
+#scroller{background:radial-gradient(ellipse at 50% 45%,rgba(100,75,132,.14),transparent 54%)}
+#map{filter:drop-shadow(0 18px 38px rgba(0,0,0,.42))}
+#map::before{content:"";position:absolute;inset:-13px -12px -11px;pointer-events:none;border:1px solid rgba(231,200,137,.34);border-radius:16px;background:linear-gradient(135deg,rgba(237,210,160,.09),transparent 12% 88%,rgba(237,210,160,.08));box-shadow:inset 0 0 0 4px rgba(13,11,25,.6),0 0 0 5px rgba(28,23,43,.72),0 0 25px rgba(0,0,0,.35)}
+#mapbg{filter:saturate(.88);background:linear-gradient(to top,#211710 0%,#25202a 26%,#192831 47%,#211b36 72%,#111326 100%)}
+.tile>div{border-radius:7px;border-color:rgba(245,228,190,.11);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 -4px 0 rgba(0,0,0,.3),0 2px 5px rgba(0,0,0,.23);transition:filter .18s,transform .18s}
+.tile.treasure>div,.tile.battle>div,.tile.portal>div,.tile.altar>div{filter:saturate(1.12) brightness(1.08)}
+#topbar{padding:13px 16px;gap:9px}
+.chip{background:linear-gradient(180deg,rgba(35,29,52,.94),rgba(17,15,29,.94));border-color:rgba(226,196,132,.24);box-shadow:0 7px 22px rgba(0,0,0,.22);letter-spacing:.015em}
+#evchip::before{content:"СОБЫТИЕ · ";font-size:.66em;letter-spacing:.11em;color:var(--gold2);opacity:.8}
+#wchip{background:linear-gradient(120deg,rgba(52,40,72,.94),rgba(18,15,31,.96))}
+#dock{background:linear-gradient(160deg,#211a34,#141123 55%,#100e1d);border-color:rgba(228,199,139,.38);box-shadow:0 -15px 45px rgba(0,0,0,.5)}
+#dock::before{content:"СОВЕТ СНОВИДЦА";display:block;color:rgba(245,223,170,.68);font-size:.61rem;letter-spacing:.2em;text-align:center;margin:1px 0 9px}
+#strip{gap:8px}
+.pchip{background:linear-gradient(140deg,rgba(53,44,70,.9),rgba(25,21,39,.95));border-color:rgba(255,255,255,.09);padding:5px 10px 5px 5px;box-shadow:0 3px 10px rgba(0,0,0,.18)}
+.pchip.act{background:linear-gradient(120deg,color-mix(in srgb,var(--pc) 19%,#251d38),#181426);box-shadow:inset 0 0 0 1px var(--pc),0 0 18px color-mix(in srgb,var(--pc) 24%,transparent)}
+#who{font-size:1.35rem;padding:8px 10px 7px;margin:2px 0 8px;border-left:2px solid var(--gold);background:linear-gradient(90deg,rgba(214,183,115,.1),transparent 75%);border-radius:0 10px 10px 0}
+#who small{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase}
+.hcard{border-radius:14px 14px 10px 10px;border-width:1px;box-shadow:0 9px 20px rgba(0,0,0,.35),0 0 0 1px color-mix(in srgb,var(--hc) 45%,transparent);transition:transform .18s,box-shadow .18s}
+.hcard:active{transform:translateY(-3px) scale(1.015)}
+.hcard::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(150deg,rgba(255,255,255,.16),transparent 22% 76%,rgba(0,0,0,.3));box-shadow:inset 0 0 0 1px rgba(255,255,255,.09)}
+.hcard .pw{top:7px;right:7px;padding:3px 8px;background:rgba(12,10,20,.84);border:1px solid rgba(245,223,170,.42);backdrop-filter:blur(4px)}
+.hcard .nm{padding:18px 5px 7px;font-size:.74rem;background:linear-gradient(transparent,rgba(8,7,14,.96))}
+#bar{gap:12px;padding:10px 3px 3px}
+.sumbtn{background:linear-gradient(135deg,rgba(43,35,60,.95),rgba(23,19,37,.95));border-color:rgba(228,199,139,.45);border-radius:12px;padding:11px 10px;box-shadow:0 3px 10px rgba(0,0,0,.18)}
+.dicebtn{background:linear-gradient(145deg,#fff5dd,#dfc27d 58%,#a57f40);border:1px solid rgba(255,247,224,.8);box-shadow:0 5px 0 #785a32,0 12px 28px rgba(0,0,0,.38),inset 0 1px 0 #fff9e8}
+#soulsBox{padding:5px 8px;border-right:2px solid rgba(143,227,255,.46)}
+#soulsBox b{color:#a8e8ff;text-shadow:0 0 18px rgba(88,194,231,.38)}
+.modal{background:linear-gradient(150deg,#211a34,#151126 62%,#100e1c);border:1px solid rgba(233,205,144,.26);box-shadow:0 28px 90px rgba(0,0,0,.62)}
+.modal h3{font-size:1.82rem;color:var(--gold2);letter-spacing:.02em}
+.abrow{display:grid;grid-template-columns:1fr;gap:10px;padding:12px;background:linear-gradient(125deg,color-mix(in srgb,var(--skill) 9%,#211a36),#171329 72%);border-color:color-mix(in srgb,var(--skill) 34%,#554268);box-shadow:inset 3px 0 0 color-mix(in srgb,var(--skill) 74%,transparent),0 5px 16px rgba(0,0,0,.17)}
+.abrow-main{display:grid;grid-template-columns:42px 1fr;gap:10px;align-items:start}
+.skill-mark{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;color:var(--skill);font-size:1.35rem;background:radial-gradient(circle at 35% 25%,color-mix(in srgb,var(--skill) 26%,transparent),rgba(15,12,24,.88));border:1px solid color-mix(in srgb,var(--skill) 58%,transparent);box-shadow:0 0 18px color-mix(in srgb,var(--skill) 20%,transparent),inset 0 0 12px color-mix(in srgb,var(--skill) 12%,transparent)}
+.skill-copy{min-width:0}.skill-copy b{color:var(--ink);font-size:1.05rem;margin:0 0 3px}.skill-copy>span{line-height:1.42}.skill-copy .reach{margin-top:6px;color:color-mix(in srgb,var(--skill) 75%,white)}
+.abrow>.abtn{margin:0;width:100%;background:linear-gradient(115deg,color-mix(in srgb,var(--skill) 45%,#dfc078),#c49f59);box-shadow:0 2px 0 #80663d}
+.cardrow img{border-radius:12px;box-shadow:0 12px 26px rgba(0,0,0,.34),0 0 0 1px color-mix(in srgb,var(--hc) 45%,transparent)}
+.mopt{background:linear-gradient(120deg,#29213c,#1a162b);border-color:rgba(255,255,255,.09);transition:transform .15s,border-color .15s}
+.mopt:active{transform:scale(.985)}
+.fitem{background:rgba(18,15,29,.96);border-color:rgba(236,213,164,.17);backdrop-filter:blur(12px)}
+@media (min-width:980px) and (min-height:560px){
+  #dock{width:370px;padding:22px 20px 24px;border-left-color:rgba(228,199,139,.34);background:radial-gradient(ellipse at 50% 0%,rgba(100,76,131,.19),transparent 44%),linear-gradient(160deg,#211a34,#141123 56%,#100e1d)}
+  #dock::before{font-size:.7rem;margin:4px 0 14px}
+  #scroller{right:370px;padding-top:76px!important}
+  #topbar{right:370px;padding:16px 22px}
+  #hand{grid-template-columns:repeat(2,minmax(0,min(154px,calc((100vh - 350px) / 3))));gap:13px}
+  #bar{padding-top:14px}
+  #map::before{inset:-17px -16px -15px;border-radius:20px}
+}
+@media (max-width:979px),(max-height:559px){
+  #topbar{padding-top:calc(9px + env(safe-area-inset-top,0px));background:linear-gradient(180deg,rgba(13,11,23,.94) 50%,rgba(13,11,23,.35),transparent)}
+  #dock{border-radius:21px 21px 0 0;max-height:min(49dvh,430px);padding-left:12px;padding-right:12px}
+  #dock::before{content:"ТВОЯ РУКА И ХОД";margin:0 0 7px;font-size:.56rem}
+  #who{font-size:1.1rem;padding:5px 8px;margin-bottom:4px}
+  #hand{gap:7px}
+  .hcard{border-radius:12px 12px 8px 8px}
+  .hcard .nm{font-size:.66rem}
+  #bar{gap:8px;padding-top:7px}
+  .dicebtn{box-shadow:0 4px 0 #785a32,0 8px 20px rgba(0,0,0,.35)}
+  #map::before{inset:-8px -7px -7px;border-radius:12px}
+  #zpeek{backdrop-filter:blur(12px)}
+}
+@media (prefers-reduced-motion:reduce){.hcard,.mopt,.tile>div{transition:none}}
 </style>
 </head>
 <body>
@@ -4662,6 +4726,30 @@ function heroSignatureFx(heroKey, pt, power = 1) {
   }
 }
 const TGT_OPS = ['push', 'steal', 'drain', 'burn', 'pull', 'skip', 'debuff', 'mark', 'poison', 'equalize', 'swapHero', 'giftSkip', 'ambushTarget', 'duel'];
+function skillHash(s) { let n = 2166136261; for (let i = 0; i < s.length; i++) n = Math.imul(n ^ s.charCodeAt(i), 16777619); return n >>> 0; }
+function skillGlyph(ab, motif) {
+  const ops = (ab.ops || []).map(o => o.op);
+  if (ops.some(o => ['zone', 'portals', 'place'].includes(o))) return ({ fire:'✹', ice:'❄', crystal:'✧', void:'◉', water:'◌', rock:'⬟', petal:'❀', star:'✦', web:'⌘' })[motif] || '⌖';
+  if (ops.some(o => ['burn', 'damage', 'strike', 'duel'].includes(o))) return '⚔';
+  if (ops.some(o => ['shield', 'guard', 'mirror', 'immune'].includes(o))) return '◇';
+  if (ops.some(o => ['fly', 'up', 'catchup', 'behindLeader'].includes(o))) return '↑';
+  if (ops.some(o => ['steal', 'pull', 'drain'].includes(o))) return '↗';
+  if (ops.some(o => ['bind', 'bindT', 'skip', 'blind', 'silence'].includes(o))) return '⌁';
+  return ({ feather:'➶', petal:'❀', fire:'✹', ice:'❄', crystal:'✧', void:'◉', smoke:'◌', blood:'♥', claw:'╳', rock:'⬟', eye:'◎', water:'◍', star:'✦', card:'▱' })[motif] || '✧';
+}
+function abilitySignatureFx(heroKey, ab, c, t, all, power = 1) {
+  if (!c) return;
+  const H = HEROES[heroKey] || {}, face = ab.face && H.faces ? H.faces.find(x => x.id === ab.face) : null;
+  const motif = face ? face.motif : H.motif || 'star', col = face ? COLORS[face.col].hex : heroColor(heroKey);
+  const seed = skillHash(heroKey + ':' + ab.id), style = seed % 5, count = Math.round((H.great ? 18 : 10) * power);
+  const ops = (ab.ops || []).map(o => o.op), area = ab.t === 'all' || ops.some(o => ['zone','portals','blind','silence','cleanseAll','pushAll','damageAll','storm','judgment','purge','eclipse','orbit','shuffleHands','flyAll'].includes(o));
+  const marks = area && all && all.length ? all : t ? [t] : [c];
+  if (style === 0) marks.filter(Boolean).forEach((pt, i) => { setTimeout(() => { beam({ x: pt.x - 28, y: pt.y - 22 }, { x: pt.x + 28, y: pt.y + 22 }, col, 2.2, 22); beam({ x: pt.x + 27, y: pt.y - 24 }, { x: pt.x - 27, y: pt.y + 24 }, lighten(col, .25), 1.5, 20); }, i * 65); });
+  else if (style === 1) marks.forEach((pt, i) => { if (pt) setTimeout(() => { spiral(pt, [col, lighten(col, .45), '#FFFFFF'], count); ring(pt, col, 42 + seed % 24, 2.4, 32); }, i * 75); });
+  else if (style === 2) marks.forEach((pt, i) => { if (pt) setTimeout(() => { motifFx(pt, col, motif, count + 5); ring(pt, lighten(col, .3), 48 + seed % 26, 2, 30); }, i * 70); });
+  else if (style === 3) marks.forEach((pt, i) => { if (pt) setTimeout(() => { ringIn(pt, col, 54 + seed % 34, 28); burst(pt, [col, lighten(col, .45), '#FFFFFF'], count, 3.2, { shape: motif === 'fire' ? 'ember' : motif === 'ice' ? 'flake' : 'shard', g: motif === 'fire' ? -.04 : 0 }); }, i * 75); });
+  else { const center = t || c; marks.forEach((pt, i) => { if (pt) setTimeout(() => { beam(center, pt, col, 1.8, 24); motifFx(pt, col, motif, count); }, i * 70); }); }
+}
 function genericFx(heroKey, ab, c, t, all) {
   const H = HEROES[heroKey]; const F = ab.face && H.faces ? H.faces.find(f => f.id === ab.face) : null;
   const col = H.great ? '#FF8AD8' : F ? COLORS[F.col].hex : heroColor(heroKey); const m = F ? F.motif : H.motif;
@@ -4716,8 +4804,15 @@ function abilitySound(heroKey, ab) {
   const specific = SFX.ab[ab.id];
   if (specific) specific();
   else { const o = ab.ops && ab.ops[0] && ab.ops[0].op; const f = SFX.ab[OPSND[o]]; if (f) f(); }
-  const F = ab.face && HEROES[heroKey].faces ? HEROES[heroKey].faces.find(x => x.id === ab.face) : null;
-  motifSnd(F ? F.motif : HEROES[heroKey].motif);
+  const n = skillHash(heroKey + ':' + ab.id), H = HEROES[heroKey] || {}, motif = H.motif || 'star';
+  const base = 170 + (n % 13) * 19, step = .065 + ((n >>> 5) % 5) * .012;
+  if (motif === 'rock' || motif === 'claw') { noise(.12, { filter:'lowpass', f:500 + n % 800, f2:100 + n % 240, vol:.17 }); tone(base, .2, { type:'triangle', vol:.08, f2:base * .55, at:.04 }); }
+  else if (motif === 'ice' || motif === 'crystal') { tone(base * 5, .28, { type:'sine', vol:.075, f2:base * 3, at:.02 }); tone(base * 7, .24, { type:'triangle', vol:.045, at:step }); noise(.08, { f:5000 + n % 1200, q:7, vol:.1, at:.03 }); }
+  else if (motif === 'fire' || motif === 'blood') { noise(.16, { filter:'lowpass', f:1000 + n % 1500, f2:180, vol:.14 }); tone(base, .3, { type:'sawtooth', vol:.075, f2:base * .7, at:.035 }); }
+  else if (motif === 'void' || motif === 'smoke') { tone(base * .55, .46, { type:'sawtooth', vol:.075, f2:base * 1.5 }); tone(base * .57, .42, { type:'sine', vol:.05, at:.045, f2:base * .8 }); }
+  else if (motif === 'water') { for (let i=0;i<3;i++) tone(base * (2 + i * .35), .16, { type:'sine', vol:.055, at:i * step, f2:base * (3 + i * .2) }); }
+  else if (motif === 'petal' || motif === 'feather') { arp([base * 3, base * 4, base * 5], step, { type:'triangle', vol:.045, dur:.22 }); noise(.11, { f:2200 + n % 1000, f2:800, vol:.06, at:.04 }); }
+  else { arp([base * 2, base * (2.5 + (n % 3) * .25), base * 3], step, { type:'triangle', vol:.05, dur:.25 }); }
 }
 const ZONE_SFX_AT = {};
 const ZONE_AUDIO = {
@@ -4828,7 +4923,8 @@ async function playFx(e, s) {
       const p = P(e.p); const H = HEROES[e.hero]; const ab = H.ab.find(x => x.id === e.ab); const t = e.target ? P(e.target) : null;
       if (e._me === false) { // чужое дело: только короткий эффект на поле
         const c = screenOfP(p.id), tp = t ? screenOfP(t.id) : null; const all = s.players.filter(q => q.id !== p.id && !q.place).map(q => screenOfP(q.id));
-        if (ABV[e.ab]) { ABV[e.ab](c, tp, all); heroSignatureFx(e.hero, tp || c, 0.55); } else genericFx(e.hero, ab, c, tp, all);
+        if (ABV[e.ab]) ABV[e.ab](c, tp, all); else genericFx(e.hero, ab, c, tp, all);
+        abilitySignatureFx(e.hero, ab, c, tp, all, 0.55);
         await sleep(450); break;
       }
       await castCard(e.hero, ab.name, p.name + (t && t.id !== p.id ? ' против ' + t.name : ''), e.copy, ab.face);
@@ -4837,7 +4933,8 @@ async function playFx(e, s) {
       abilitySound(e.hero, ab);
       const c = screenOfP(p.id), tp = t ? screenOfP(t.id) : null;
       const all = s.players.filter(q => q.id !== p.id && !q.place).map(q => screenOfP(q.id));
-       if (ABV[e.ab]) { ABV[e.ab](c, tp, all); heroSignatureFx(e.hero, tp || c, 0.75); } else genericFx(e.hero, ab, c, tp, all);
+        if (ABV[e.ab]) ABV[e.ab](c, tp, all); else genericFx(e.hero, ab, c, tp, all);
+        abilitySignatureFx(e.hero, ab, c, tp, all, 0.75);
       renderDock();
       await sleep(850); break;
     }
@@ -4979,7 +5076,11 @@ function cardSheet(owner, hh, face) {
     const hasZone = (ab.ops || []).some(o => o.op === 'zone');
     const btn = h('button', { class: 'abtn', disabled: !mineNow || !!blocked || noT, onclick: () => pickAbility(owner, hh, ab) }, noT ? (ar ? 'В области никого нет' : 'Нет цели ' + (ab.rows != null ? rowsPhrase(ab.rows) : 'в пределах ' + rr + ' клеток')) : hasZone ? 'Показать область' : 'Применить и сжечь карту');
     const reach = ar && mineNow ? h('small', { class: 'reach' }, ar.who.length ? 'Сейчас достанет: ' + ar.who.map(q => q.name + ' (клетка ' + (q.pos + 1) + ')').join(', ') : 'Сейчас в области никого нет.') : null;
-    list.appendChild(h('div', { class: 'abrow' }, h('b', null, ab.name), h('span', null, abDesc(ab)), reach, btn));
+    const hue = F ? COLORS[F.col].hex : heroColor(hh.k);
+    list.appendChild(h('div', { class: 'abrow', style: '--skill:' + hue },
+      h('div', { class: 'abrow-main' },
+        h('span', { class: 'skill-mark', 'aria-hidden': 'true' }, skillGlyph(ab, H.motif)),
+        h('div', { class: 'skill-copy' }, h('b', null, ab.name), h('span', null, abDesc(ab)), reach)), btn));
   });
   const lvl = auraLevel(owner); const z = ZSIGN[hh.k];
   const note = !mineNow ? 'Способности можно применять в свой ход до броска кубиков.' : blocked ? blocked : 'Пока герой в руке, он добавляет ' + pw + ' к силе в боях. После применения способности он сгорит.';
