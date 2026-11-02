@@ -4737,18 +4737,55 @@ function skillGlyph(ab, motif) {
   if (ops.some(o => ['bind', 'bindT', 'skip', 'blind', 'silence'].includes(o))) return '⌁';
   return ({ feather:'➶', petal:'❀', fire:'✹', ice:'❄', crystal:'✧', void:'◉', smoke:'◌', blood:'♥', claw:'╳', rock:'⬟', eye:'◎', water:'◍', star:'✦', card:'▱' })[motif] || '✧';
 }
+function abilityWindupFx(heroKey, ab, c) {
+  if (!c) return;
+  const H = HEROES[heroKey] || {}, motif = H.motif || 'star', col = heroColor(heroKey), seed = skillHash(heroKey + ':' + ab.id);
+  ringIn(c, col, 34 + seed % 20, RM ? 18 : 28);
+  if (motif === 'void' || motif === 'smoke') spiral(c, [col, '#20182f', '#FFFFFF'], RM ? 7 : 13);
+  else if (motif === 'ice' || motif === 'crystal') burst(c, [col, '#EAFBFF', '#FFFFFF'], RM ? 4 : 10, 1.5, { shape:'flake', life:24 });
+  else if (motif === 'fire' || motif === 'blood') burst(c, [col, '#FFCE79', '#FF7048'], RM ? 4 : 9, 1.7, { shape:'ember', g:-.04, life:26 });
+  else if (motif === 'rock' || motif === 'claw') { ring(c, col, 25 + seed % 14, 2, 24); if (!RM) rocks(c, 4); }
+  else if (motif === 'water') burst(c, [col, '#E4FAFF'], RM ? 4 : 8, 1.5, { shape:'drop', g:-.025, life:25 });
+  else burst(c, [col, lighten(col, .45), '#FFFFFF'], RM ? 4 : 8, 1.8, { shape: motif === 'petal' ? 'petal' : 'star', life:26 });
+}
 function abilitySignatureFx(heroKey, ab, c, t, all, power = 1) {
   if (!c) return;
   const H = HEROES[heroKey] || {}, face = ab.face && H.faces ? H.faces.find(x => x.id === ab.face) : null;
-  const motif = face ? face.motif : H.motif || 'star', col = face ? COLORS[face.col].hex : heroColor(heroKey);
-  const seed = skillHash(heroKey + ':' + ab.id), style = seed % 5, count = Math.round((H.great ? 18 : 10) * power);
-  const ops = (ab.ops || []).map(o => o.op), area = ab.t === 'all' || ops.some(o => ['zone','portals','blind','silence','cleanseAll','pushAll','damageAll','storm','judgment','purge','eclipse','orbit','shuffleHands','flyAll'].includes(o));
-  const marks = area && all && all.length ? all : t ? [t] : [c];
-  if (style === 0) marks.filter(Boolean).forEach((pt, i) => { setTimeout(() => { beam({ x: pt.x - 28, y: pt.y - 22 }, { x: pt.x + 28, y: pt.y + 22 }, col, 2.2, 22); beam({ x: pt.x + 27, y: pt.y - 24 }, { x: pt.x - 27, y: pt.y + 24 }, lighten(col, .25), 1.5, 20); }, i * 65); });
-  else if (style === 1) marks.forEach((pt, i) => { if (pt) setTimeout(() => { spiral(pt, [col, lighten(col, .45), '#FFFFFF'], count); ring(pt, col, 42 + seed % 24, 2.4, 32); }, i * 75); });
-  else if (style === 2) marks.forEach((pt, i) => { if (pt) setTimeout(() => { motifFx(pt, col, motif, count + 5); ring(pt, lighten(col, .3), 48 + seed % 26, 2, 30); }, i * 70); });
-  else if (style === 3) marks.forEach((pt, i) => { if (pt) setTimeout(() => { ringIn(pt, col, 54 + seed % 34, 28); burst(pt, [col, lighten(col, .45), '#FFFFFF'], count, 3.2, { shape: motif === 'fire' ? 'ember' : motif === 'ice' ? 'flake' : 'shard', g: motif === 'fire' ? -.04 : 0 }); }, i * 75); });
-  else { const center = t || c; marks.forEach((pt, i) => { if (pt) setTimeout(() => { beam(center, pt, col, 1.8, 24); motifFx(pt, col, motif, count); }, i * 70); }); }
+  const motif = face ? face.motif : H.motif || 'star', col = face ? COLORS[face.col].hex : heroColor(heroKey), seed = skillHash(heroKey + ':' + ab.id);
+  const ops = (ab.ops || []).map(o => o.op), zone = ops.some(o => ['zone','portals'].includes(o));
+  const global = ab.t === 'all' || ops.some(o => ['blind','silence','cleanseAll','pushAll','damageAll','storm','judgment','purge','eclipse','orbit','shuffleHands','flyAll'].includes(o));
+  const marks = global && all && all.length ? all.filter(Boolean) : t ? [t] : [c];
+  const sharp = ops.some(o => ['burn','damage','strike','duel','ambushTarget','quake'].includes(o)) || motif === 'claw';
+  const projectile = ops.some(o => ['push','pull','steal','drain','mark','poison','bind','bindT','skip','blindOthers','delayHit'].includes(o));
+  if (zone) {
+    nova(c, col, motif, 70 + seed % 45);
+    motifFx(c, col, motif, RM ? 5 : 12);
+    return;
+  }
+  if (global) {
+    marks.forEach((pt, i) => setTimeout(() => {
+      if (sharp) { beam({ x:pt.x - 24, y:pt.y - 30 }, { x:pt.x + 24, y:pt.y + 25 }, col, 2.5, 22); burst(pt, [col, lighten(col,.45)], RM ? 4 : 9, 3.2, { shape: motif === 'fire' ? 'ember' : motif === 'ice' ? 'flake' : 'shard' }); }
+      else { ringIn(pt, col, 50 + seed % 34, 28); motifFx(pt, col, motif, RM ? 4 : 10); }
+    }, i * (RM ? 0 : 90)));
+    return;
+  }
+  if (t && t !== c) {
+    if (sharp) {
+      const dx = t.x - c.x, dy = t.y - c.y, d = Math.hypot(dx,dy) || 1, nx = -dy / d, ny = dx / d;
+      setTimeout(() => beam({ x:t.x - nx * 34 - dx / d * 22, y:t.y - ny * 34 - dy / d * 22 }, { x:t.x + nx * 34 + dx / d * 22, y:t.y + ny * 34 + dy / d * 22 }, col, 3.5, 25), 80);
+      setTimeout(() => { burst(t, [col, lighten(col,.5), '#FFFFFF'], RM ? 6 : 15, 4.4, { shape: motif === 'fire' ? 'ember' : motif === 'ice' ? 'flake' : motif === 'claw' ? 'shard' : 'star' }); ring(t, col, 54 + seed % 26, 2.6, 30); }, 150);
+    } else if (projectile) {
+      setTimeout(() => { orb(c, t, col, motif, { power:power * .85, size:.75 + (seed % 4) * .08, bend: seed % 2 ? 1 : -1 }); }, 80);
+    } else {
+      setTimeout(() => { beam(c, t, col, 2.5, 26); ring(t, col, 48 + seed % 28, 2.4, 30); burst(t, [col, lighten(col,.45)], RM ? 4 : 10, 3.1, { shape: motif === 'petal' ? 'petal' : 'star' }); }, 110);
+    }
+    return;
+  }
+  if (projectile && marks.length && marks[0] !== c) {
+    marks.forEach((pt, i) => setTimeout(() => { orb(c, pt, col, motif, { power:power * .6, size:.58, bend: (i % 2 ? 1 : -1) * (1 + seed % 2) }); }, i * (RM ? 0 : 90)));
+  } else {
+    setTimeout(() => { pillar(c, col); ring(c, col, 58 + seed % 30, 2.6, 34); motifFx(c, col, motif, RM ? 5 : 12); }, 100);
+  }
 }
 function genericFx(heroKey, ab, c, t, all) {
   const H = HEROES[heroKey]; const F = ab.face && H.faces ? H.faces.find(f => f.id === ab.face) : null;
@@ -4813,6 +4850,14 @@ function abilitySound(heroKey, ab) {
   else if (motif === 'water') { for (let i=0;i<3;i++) tone(base * (2 + i * .35), .16, { type:'sine', vol:.055, at:i * step, f2:base * (3 + i * .2) }); }
   else if (motif === 'petal' || motif === 'feather') { arp([base * 3, base * 4, base * 5], step, { type:'triangle', vol:.045, dur:.22 }); noise(.11, { f:2200 + n % 1000, f2:800, vol:.06, at:.04 }); }
   else { arp([base * 2, base * (2.5 + (n % 3) * .25), base * 3], step, { type:'triangle', vol:.05, dur:.25 }); }
+}
+function abilityWindupSound(heroKey, ab) {
+  if (!SND.on) return;
+  const n = skillHash(heroKey + ':' + ab.id), H = HEROES[heroKey] || {}, f = 105 + n % 170;
+  if (H.motif === 'rock' || H.motif === 'claw') noise(.12, { filter:'lowpass', f:260 + n % 300, f2:100, vol:.055 });
+  else if (H.motif === 'ice' || H.motif === 'crystal') tone(500 + n % 900, .18, { type:'sine', vol:.035, f2:950 + n % 1200 });
+  else if (H.motif === 'void' || H.motif === 'smoke') tone(f, .2, { type:'sine', vol:.04, f2:f * 1.5 });
+  else noise(.15, { f:220 + n % 700, f2:900 + n % 1200, q:1.2, vol:.045, attack:.05 });
 }
 const ZONE_SFX_AT = {};
 const ZONE_AUDIO = {
@@ -4923,15 +4968,19 @@ async function playFx(e, s) {
       const p = P(e.p); const H = HEROES[e.hero]; const ab = H.ab.find(x => x.id === e.ab); const t = e.target ? P(e.target) : null;
       if (e._me === false) { // чужое дело: только короткий эффект на поле
         const c = screenOfP(p.id), tp = t ? screenOfP(t.id) : null; const all = s.players.filter(q => q.id !== p.id && !q.place).map(q => screenOfP(q.id));
+        abilityWindupFx(e.hero, ab, c); abilityWindupSound(e.hero, ab);
+        await sleep(RM ? 35 : 130);
+        abilitySound(e.hero, ab);
         if (ABV[e.ab]) ABV[e.ab](c, tp, all); else genericFx(e.hero, ab, c, tp, all);
         abilitySignatureFx(e.hero, ab, c, tp, all, 0.55);
         await sleep(450); break;
       }
       await castCard(e.hero, ab.name, p.name + (t && t.id !== p.id ? ' против ' + t.name : ''), e.copy, ab.face);
       if (t) focusCell(G.disp[t.id] ?? t.pos); else focusCell(G.disp[p.id] ?? p.pos);
-      await sleep(250);
-      abilitySound(e.hero, ab);
       const c = screenOfP(p.id), tp = t ? screenOfP(t.id) : null;
+      abilityWindupFx(e.hero, ab, c); abilityWindupSound(e.hero, ab);
+      await sleep(RM ? 40 : 180);
+      abilitySound(e.hero, ab);
       const all = s.players.filter(q => q.id !== p.id && !q.place).map(q => screenOfP(q.id));
         if (ABV[e.ab]) ABV[e.ab](c, tp, all); else genericFx(e.hero, ab, c, tp, all);
         abilitySignatureFx(e.hero, ab, c, tp, all, 0.75);
