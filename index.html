@@ -612,6 +612,41 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .sound-slider input{width:100%;accent-color:#d8b86f}
 @media (max-width:979px),(max-height:559px){.tile-glyph{width:70%;height:70%}.tile .n{font-size:8px}.tile-word{font-size:7px}.tile-face::before{opacity:.32}}
 @media (prefers-reduced-motion:reduce){.tile-glyph{transition:none}}
+.stone-v3 .tile-face{--stone:url('assets/textures/dungeon/stone-grain-d.svg')}.stone-v4 .tile-face{--stone:url('assets/textures/dungeon/stone-grain-e.svg')}.stone-v5 .tile-face{--stone:url('assets/textures/dungeon/stone-grain-f.svg')}
+.tile.empty:not(.blank).zone-stone .tile-face{background-image:radial-gradient(ellipse at 22% 18%,rgba(205,197,190,.18),transparent 38%),radial-gradient(ellipse at 82% 82%,rgba(0,0,0,.26),transparent 42%),linear-gradient(145deg,#4a464b 0%,#34323a 50%,#25232b 100%)}
+.tile.empty:not(.blank).zone-frost .tile-face{--tile-glow:#82d9ed;background-image:radial-gradient(ellipse at 48% 45%,rgba(113,204,225,.23),transparent 62%),linear-gradient(145deg,#31434a 0%,#21333b 52%,#17232b 100%)}
+.tile.empty:not(.blank).zone-blood .tile-face{--tile-glow:#d84958;background-image:radial-gradient(ellipse at 46% 52%,rgba(177,37,52,.25),transparent 57%),linear-gradient(145deg,#482b30 0%,#302126 54%,#1f171d 100%)}
+.tile.empty:not(.blank).zone-arcane .tile-face{--tile-glow:#a477d8;background-image:radial-gradient(ellipse at 52% 48%,rgba(151,108,202,.25),transparent 61%),linear-gradient(145deg,#3b3046 0%,#2b2338 54%,#1c1825 100%)}
+.tile.empty:not(.blank).zone-dream .tile-face{--tile-glow:#69bce7;background-image:radial-gradient(ellipse at 48% 47%,rgba(86,155,212,.25),transparent 62%),linear-gradient(145deg,#293848 0%,#202c3e 54%,#171c2a 100%)}
+.tile.empty:not(.blank).zone-stone .tile-face::after{opacity:.35;background-image:linear-gradient(119deg,transparent 0 36%,rgba(7,8,12,.78) 37%,rgba(190,183,178,.32) 37.7%,transparent 38.6%),linear-gradient(25deg,transparent 0 72%,rgba(8,8,12,.66) 73%,rgba(178,171,166,.25) 73.7%,transparent 74.5%)}
+.tile.empty:not(.blank).zone-frost .tile-face::after{opacity:.48;background-image:linear-gradient(128deg,transparent 0 31%,rgba(176,239,255,.48) 31.5%,rgba(16,47,63,.74) 32.3%,transparent 33%),linear-gradient(30deg,transparent 0 70%,rgba(165,230,248,.42) 70.5%,rgba(12,40,56,.72) 71.3%,transparent 72%)}
+.tile.empty:not(.blank).zone-blood .tile-face::after{opacity:.52;background-image:linear-gradient(117deg,transparent 0 22%,rgba(14,9,14,.85) 23%,rgba(199,58,65,.58) 23.7%,transparent 24.7%),linear-gradient(18deg,transparent 0 67%,rgba(15,9,14,.8) 68%,rgba(205,53,61,.48) 68.7%,transparent 69.7%)}
+.tile.empty:not(.blank).zone-arcane .tile-face::after{opacity:.34;background-image:repeating-conic-gradient(from 12deg at 77% 74%,rgba(205,173,248,.55) 0 1deg,transparent 1deg 30deg),radial-gradient(circle at 77% 74%,transparent 0 17%,rgba(178,141,225,.55) 18% 19%,transparent 20%);}
+.tile.empty:not(.blank).zone-dream .tile-face::after{opacity:.4;background-image:linear-gradient(130deg,transparent 0 35%,rgba(165,224,255,.56) 35.5%,rgba(21,49,74,.72) 36.4%,transparent 37.2%),linear-gradient(38deg,transparent 0 67%,rgba(165,224,255,.46) 67.5%,transparent 68.4%),radial-gradient(circle at 78% 22%,rgba(200,241,255,.55) 0 1px,transparent 2px)}
+.mat-ornament{display:none;position:absolute;z-index:1;right:5px;bottom:5px;width:11px;height:11px;pointer-events:none;opacity:.62}
+.tile.empty:not(.blank).etch .mat-ornament{display:block}
+.tile.zone-stone.etch .mat-ornament{width:9px;height:7px;clip-path:polygon(0 25%,78% 0,100% 68%,28% 100%);background:linear-gradient(140deg,#b4a9a0,#302d32)}
+.tile.zone-frost.etch .mat-ornament{clip-path:polygon(50% 0,66% 35%,100% 50%,66% 65%,50% 100%,34% 65%,0 50%,34% 35%);background:linear-gradient(145deg,#f1ffff,#62c0de 55%,#335a77);filter:drop-shadow(0 0 3px #73d9f0)}
+.tile.zone-blood.etch .mat-ornament{width:12px;height:8px;background:radial-gradient(ellipse,#f04b58,rgba(124,25,41,.5) 48%,transparent 75%);filter:blur(.5px)}
+.tile.zone-arcane.etch .mat-ornament{border:1px solid #c69af0;border-radius:50%;box-shadow:inset 0 0 3px #c69af0,0 0 4px #9563cb;transform:rotate(45deg)}
+.tile.zone-dream.etch .mat-ornament{clip-path:polygon(50% 0,61% 38%,100% 50%,61% 62%,50% 100%,39% 62%,0 50%,39% 38%);background:#9de7ff;filter:drop-shadow(0 0 4px #68bfff)}
+.tile.treasure.stone-v0 .tile-face::after{background-image:linear-gradient(122deg,transparent 0 28%,#21180f 29%,#f1ca65 29.7%,transparent 30.8%),linear-gradient(25deg,transparent 0 68%,#c48e37 69%,transparent 70%)}
+.tile.treasure.stone-v1 .tile-face::after{background-image:linear-gradient(146deg,transparent 0 41%,#21180f 42%,#e9c265 42.7%,transparent 43.8%),linear-gradient(18deg,transparent 0 78%,#d2a149 79%,transparent 80%)}
+.tile.treasure.stone-v2 .tile-face::after{background-image:linear-gradient(112deg,transparent 0 61%,#21180f 62%,#f3d67c 62.7%,transparent 63.8%),linear-gradient(35deg,transparent 0 24%,#bd8731 25%,transparent 26%)}
+.tile.treasure.stone-v3 .tile-face::after{background-image:linear-gradient(132deg,transparent 0 54%,#21180f 55%,#f1ca65 55.7%,transparent 56.8%),linear-gradient(14deg,transparent 0 39%,#c48e37 40%,transparent 41%)}
+.tile.battle.stone-v0 .tile-face::after,.tile.trap.stone-v0 .tile-face::after{background-image:linear-gradient(126deg,transparent 0 28%,rgba(13,8,13,.9) 29%,#cc4756 29.8%,transparent 31%),linear-gradient(24deg,transparent 0 70%,#9c293b 71%,transparent 72%)}
+.tile.battle.stone-v1 .tile-face::after,.tile.trap.stone-v1 .tile-face::after{background-image:linear-gradient(148deg,transparent 0 45%,rgba(13,8,13,.9) 46%,#e15b60 46.8%,transparent 48%),linear-gradient(19deg,transparent 0 25%,#9c293b 26%,transparent 27%)}
+.tile.battle.stone-v2 .tile-face::after,.tile.trap.stone-v2 .tile-face::after{background-image:linear-gradient(118deg,transparent 0 57%,rgba(13,8,13,.9) 58%,#cf4b5a 58.8%,transparent 60%),linear-gradient(38deg,transparent 0 33%,#a52f40 34%,transparent 35%)}
+.tile.battle.stone-v3 .tile-face::after,.tile.trap.stone-v3 .tile-face::after{background-image:linear-gradient(141deg,transparent 0 21%,rgba(13,8,13,.9) 22%,#d54b59 22.8%,transparent 24%),linear-gradient(28deg,transparent 0 77%,#a52f40 78%,transparent 79%)}
+.tile.omen.stone-v0 .tile-face::after{background-image:radial-gradient(circle at 77% 73%,transparent 0 17%,#c09bf2 18% 19%,transparent 20%),repeating-conic-gradient(from 8deg at 77% 73%,rgba(202,174,246,.5) 0 1deg,transparent 1deg 28deg)}
+.tile.omen.stone-v1 .tile-face::after{background-image:radial-gradient(circle at 28% 70%,transparent 0 20%,#b98eea 21% 22%,transparent 23%),repeating-conic-gradient(from 19deg at 28% 70%,rgba(202,174,246,.5) 0 1deg,transparent 1deg 34deg)}
+.tile.omen.stone-v2 .tile-face::after{background-image:radial-gradient(circle at 76% 26%,transparent 0 18%,#b98eea 19% 20%,transparent 21%),repeating-conic-gradient(from 30deg at 76% 26%,rgba(202,174,246,.5) 0 1deg,transparent 1deg 32deg)}
+.tile.omen.stone-v3 .tile-face::after{background-image:radial-gradient(circle at 25% 28%,transparent 0 17%,#b98eea 18% 19%,transparent 20%),repeating-conic-gradient(from 5deg at 25% 28%,rgba(202,174,246,.5) 0 1deg,transparent 1deg 30deg)}
+.tile.portal.stone-v0 .tile-face::after,.tile.altar.stone-v0 .tile-face::after{background-image:linear-gradient(132deg,transparent 0 34%,rgba(173,239,255,.5) 34.5%,rgba(11,37,58,.75) 35.3%,transparent 36%),radial-gradient(circle at 78% 24%,rgba(220,249,255,.65) 0 1px,transparent 2px)}
+.tile.portal.stone-v1 .tile-face::after,.tile.altar.stone-v1 .tile-face::after{background-image:linear-gradient(28deg,transparent 0 62%,rgba(173,239,255,.55) 62.5%,rgba(11,37,58,.75) 63.3%,transparent 64%),radial-gradient(circle at 24% 27%,rgba(220,249,255,.65) 0 1px,transparent 2px)}
+.tile.portal.stone-v2 .tile-face::after,.tile.altar.stone-v2 .tile-face::after{background-image:linear-gradient(148deg,transparent 0 48%,rgba(173,239,255,.55) 48.5%,rgba(11,37,58,.75) 49.3%,transparent 50%),radial-gradient(circle at 78% 75%,rgba(220,249,255,.65) 0 1px,transparent 2px)}
+.tile.portal.stone-v3 .tile-face::after,.tile.altar.stone-v3 .tile-face::after{background-image:linear-gradient(18deg,transparent 0 35%,rgba(173,239,255,.55) 35.5%,rgba(11,37,58,.75) 36.3%,transparent 37%),radial-gradient(circle at 25% 73%,rgba(220,249,255,.65) 0 1px,transparent 2px)}
+@media (prefers-reduced-motion:reduce){.tile-glyph{transition:none}}
 </style>
 </head>
 <body>
@@ -4230,13 +4265,15 @@ function renderBoard(seed, ev) {
   m.style.setProperty('--cs', MAP.cs + 'px'); m.style.setProperty('--ts', Math.min(38, MAP.cs * 0.7) + 'px');
   const tl = $('tiles'); tl.innerHTML = ''; MAP.tiles = [];
   B.cells.forEach(c => {
-    const r = rowOf(c.id), col = colOf(c.id); const z = ZONES[Math.min(4, Math.floor(r / ZROWS))];
+    const r = rowOf(c.id), col = colOf(c.id), floor = Math.min(4, Math.floor(r / ZROWS)); const z = ZONES[floor];
     const tb = (r + col) % 2 ? z[0] : z[1];
+    const mats = ['stone','frost','blood','arcane','dream'], variant = (c.id * 17 + floor * 11) % 6;
     const label = c.type === 'start' ? 'СОН' : c.type === 'finish' ? 'ЯВЬ' : null;
-    const inner = h('div', { class:'tile-face' }, tileGlyph(c.type), h('span', { class: 'n' }, String(c.id + 1)), label ? h('span', { class:'tile-word' }, label) : null);
+    const etch = (c.id * 7 + floor) % 4 === 0;
+    const inner = h('div', { class:'tile-face' }, h('span', { class:'mat-ornament', 'aria-hidden':'true' }), tileGlyph(c.type), h('span', { class: 'n' }, String(c.id + 1)), label ? h('span', { class:'tile-word' }, label) : null);
     const rowEnd = (r % 2 === 0 && col === COLS - 1) || (r % 2 === 1 && col === 0);
     if (rowEnd && c.id < CELLS - 1) inner.appendChild(h('span', { class: 'turn' }, '⤴'));
-    const t = h('button', { class: 'tile ' + c.type + ' stone-v' + ((c.id * 7 + r) % 3), style: `left:${col * MAP.cs}px;top:${MAP.top + (ROWS - 1 - r) * MAP.cs}px;width:${MAP.cs}px;height:${MAP.cs}px;--tb:${tb}` + (c.type === 'shrine' ? `;--sc:${COLORS[c.color].hex}` : ''), 'aria-label': 'Клетка ' + (c.id + 1) }, inner);
+    const t = h('button', { class: 'tile ' + c.type + ' stone-v' + variant + ' zone-' + mats[floor] + (etch ? ' etch' : ''), style: `left:${col * MAP.cs}px;top:${MAP.top + (ROWS - 1 - r) * MAP.cs}px;width:${MAP.cs}px;height:${MAP.cs}px;--tb:${tb}` + (c.type === 'shrine' ? `;--sc:${COLORS[c.color].hex}` : ''), 'aria-label': 'Клетка ' + (c.id + 1) }, inner);
     t.addEventListener('click', () => {
       let d = TINFO[c.type];
       if (c.type === 'shrine') d = 'Святилище, ' + COLORS[c.color].name + ' цвет: усиливает героя этого цвета в руке.';
