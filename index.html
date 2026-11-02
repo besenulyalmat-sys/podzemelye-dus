@@ -262,6 +262,17 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 #hand{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
 .hcard{position:relative;aspect-ratio:2/3;border-radius:10px;overflow:hidden;border:2px solid var(--hc);box-shadow:0 0 12px color-mix(in srgb,var(--hc) 70%,transparent);background:#1E1638;padding:0;display:block;width:100%}
 .hcard img{width:100%;height:100%;object-fit:cover;display:block}
+.hcard.m-fire{border-radius:12px 12px 8px 8px;box-shadow:0 0 14px color-mix(in srgb,var(--hc) 74%,transparent),inset 0 -5px 10px rgba(255,116,50,.24)}
+.hcard.m-ice,.hcard.m-crystal{border-style:double}
+.hcard.m-void,.hcard.m-smoke{border-style:dashed}
+.hcard.m-petal{border-radius:18px 8px 18px 8px}
+.hcard.m-feather{border-radius:17px 17px 7px 7px}
+.hcard.m-rock{border-width:3px;border-radius:7px}
+.hcard.m-claw{border-style:groove}
+.hcard.m-water{border-radius:20px 20px 10px 10px}
+.hcard.arrive{z-index:10;animation:cardarrive .82s cubic-bezier(.18,1.35,.4,1) both}
+@keyframes cardarrive{0%{opacity:0;transform:translateY(34px) scale(.72) rotate(-7deg);filter:brightness(2.2)}62%{opacity:1;transform:translateY(-7px) scale(1.05) rotate(2deg);filter:brightness(1.3)}100%{transform:none;filter:none}}
+@media (prefers-reduced-motion:reduce){.hcard.arrive{animation:none}}
 .hcard .pw{position:absolute;right:4px;top:4px;font-size:.75rem;font-weight:700;background:rgba(14,10,26,.85);color:#fff;padding:1px 6px;border-radius:999px}
 .hcard .nm{position:absolute;left:0;right:0;bottom:0;padding:12px 4px 4px;font-size:.72rem;font-weight:700;color:#fff;background:linear-gradient(transparent,rgba(10,8,20,.92));text-align:center;line-height:1.1}
 .hcard.great{border-color:transparent;background:linear-gradient(#1E1638,#1E1638) padding-box,conic-gradient(from var(--ga,0deg),#FF8AD8,#8FE3FF,#FFC960,#7BE0A4,#B58CFF,#FF8AD8) border-box;animation:gspin 3s linear infinite}
@@ -476,7 +487,8 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
   #topbar .chip.icon{width:34px;height:34px;padding:0;display:grid;place-items:center;font-size:.95rem}
   #evchip{max-width:46vw}
   #wchip{max-width:34vw}
-  #dock{padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px))}
+  #dock{padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));max-height:58vh;max-height:min(62dvh,560px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+  #bar{position:sticky;bottom:0;z-index:2;padding:6px 0 3px;background:linear-gradient(180deg,rgba(22,17,43,.7),var(--panel) 38%)}
   #strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;overflow:hidden;padding-bottom:4px}
   .pchip{min-width:0;padding:3px 6px 3px 3px;border-radius:10px}
   .pchip .bar{width:100%}
@@ -567,7 +579,7 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
       <button class="chip icon" id="bMenu" aria-label="Меню">☰</button>
     </header>
     <section id="dock">
-      <button id="bMini" aria-label="Скрыть карты">▾ карты</button>
+      <button id="bMini" aria-label="Скрыть карты" aria-controls="hand" aria-expanded="true">▾ карты</button>
       <div id="strip"></div>
       <div id="who"></div>
       <div id="aura"></div>
@@ -4392,8 +4404,9 @@ async function showSummon(e, s) {
   ov.appendChild(h('div', { class: 'flip' }, h('div', { class: 'in' }, h('div', { class: 'fr', style: 'background-image:' + CARDIMG.bg(e.hero) }), h('div', { class: 'bk' }))));
   SFX.summon(tier); flash(rc);
   const cpt = { x: innerWidth / 2, y: innerHeight / 2 };
-  burst(cpt, H.great ? ['#FF8AD8', '#8FE3FF', '#FFC960', '#7BE0A4', '#B58CFF'] : [rc, '#FFFFFF'], H.great ? 110 : 40, H.great ? 10 : 6);
-  if (H.great) { shake(); ring(cpt, '#FF8AD8', 300, 8, 70); setTimeout(() => ring(cpt, '#8FE3FF', 240, 6, 60), 200); setTimeout(() => ring(cpt, '#FFC960', 180, 4, 50), 400); }
+  heroSignatureFx(e.hero, cpt, H.great ? 1.65 : 1);
+  motifSnd(H.motif || 'star');
+  if (H.great) { shake(); ring(cpt, rc, 300, 8, 70); setTimeout(() => ring(cpt, '#FFF0BB', 210, 5, 58), 220); }
   ov.appendChild(h('h4', null, H.name));
   ov.appendChild(h('p', null, clsLabel(H) + '. ' + H.title + '. Сила ' + H.pw + ', ' + COLORS[H.col].name + ' цвет.'));
   const full = s.phase === 'replace' && s.pending && s.pending.newHero === e.hero;
@@ -4527,6 +4540,48 @@ function motifFx(pt, color, motif, n = 26) {
     default: burst(pt, color, n, 5);
   }
 }
+function heroSignatureFx(heroKey, pt, power = 1) {
+  if (!pt) return;
+  const H = HEROES[heroKey] || {}, motif = H.motif || 'star', col = heroColor(heroKey);
+  const count = Math.round((H.great ? 52 : 24) * power);
+  switch (motif) {
+    case 'fire':
+      burst(pt, ['#FF7A50', '#FFD27A', col], count, 7 * power, { shape: 'ember', g: -0.08 });
+      ring(pt, '#FFC66D', 68 * power, 3, 38); break;
+    case 'ice':
+      burst(pt, [col, '#EAFBFF', '#FFFFFF'], count, 6 * power, { shape: 'flake' });
+      ring(pt, '#DDF8FF', 84 * power, 4, 48); break;
+    case 'crystal':
+      burst(pt, [col, '#FFFFFF', '#C9F3FF'], count, 7 * power, { shape: 'shard' });
+      ring(pt, col, 74 * power, 4, 48); break;
+    case 'water':
+      motifFx(pt, col, motif, count);
+      ring(pt, '#E0FAFF', 96 * power, 3, 52); setTimeout(() => ring(pt, col, 66 * power, 2, 42), 120); break;
+    case 'void':
+      portalFx(pt, col, H.great ? 66 : 46);
+      spiral(pt, [col, '#FFFFFF', '#171022'], Math.round(26 * power)); ringIn(pt, col, 120 * power, 48); break;
+    case 'smoke':
+      motifFx(pt, col, motif, count); ringIn(pt, '#342249', 90 * power, 44); break;
+    case 'blood':
+      motifFx(pt, col, motif, count);
+      ring(pt, '#C0182E', 72 * power, 5, 44); break;
+    case 'petal': case 'feather':
+      motifFx(pt, col, motif, count);
+      burst(pt, [col, '#FFF0D0'], Math.round(10 * power), 4 * power, { shape: motif === 'petal' ? 'petal' : 'feather' }); break;
+    case 'rock': case 'claw':
+      motifFx(pt, col, motif, count);
+      if (motif === 'rock') rocks(pt, Math.round(14 * power));
+      else { ring(pt, col, 56 * power, 4, 34); shake(); }
+      break;
+    case 'star': case 'eye':
+      motifFx(pt, col, motif, count);
+      spiral(pt, [col, '#FFF5CD', '#FFFFFF'], Math.round(20 * power)); break;
+    case 'card':
+      motifFx(pt, col, motif, count); ring(pt, col, 74 * power, 3, 38); break;
+    default:
+      motifFx(pt, col, motif, count); ring(pt, col, 72 * power, 3, 38);
+  }
+}
 const TGT_OPS = ['push', 'steal', 'drain', 'burn', 'pull', 'skip', 'debuff', 'mark', 'poison', 'equalize', 'swapHero', 'giftSkip', 'ambushTarget', 'duel'];
 function genericFx(heroKey, ab, c, t, all) {
   const H = HEROES[heroKey]; const F = ab.face && H.faces ? H.faces.find(f => f.id === ab.face) : null;
@@ -4579,8 +4634,11 @@ function motifSnd(m) {
   }
 }
 function abilitySound(heroKey, ab) {
-  if (SFX.ab[ab.id]) { SFX.ab[ab.id](); return; }
-  const o = ab.ops && ab.ops[0] && ab.ops[0].op; const f = SFX.ab[OPSND[o]]; if (f) f(); const F = ab.face && HEROES[heroKey].faces ? HEROES[heroKey].faces.find(x => x.id === ab.face) : null; motifSnd(F ? F.motif : HEROES[heroKey].motif);
+  const specific = SFX.ab[ab.id];
+  if (specific) specific();
+  else { const o = ab.ops && ab.ops[0] && ab.ops[0].op; const f = SFX.ab[OPSND[o]]; if (f) f(); }
+  const F = ab.face && HEROES[heroKey].faces ? HEROES[heroKey].faces.find(x => x.id === ab.face) : null;
+  motifSnd(F ? F.motif : HEROES[heroKey].motif);
 }
 
 async function playFx(e, s) {
@@ -4640,10 +4698,10 @@ async function playFx(e, s) {
     case 'wildAll': { if (e._me === false) break; const col = heroColor(e.foe); flash(col + '55'); banner(e.foe, HEROES[e.foe].name + ' ' + e.msg, 'Сила души бьёт по игроку ' + P(e.p).name, col); abilitySound(e.foe, HEROES[e.foe].ab[0]); await sleep(700); break; }
     case 'battlePass': { if (e._me === false) break; const col = heroColor(e.foe); banner(e.foe, P(e.p).name + ' проходит мимо', HEROES[e.foe].name + ' остаётся в подземелье', col); await sleep(900); break; }
     case 'wildHit': { const col = heroColor(e.foe); const pt = screenOfP(e.p); motifFx(pt, col, HEROES[e.foe].motif, 24); ring(pt, col, 60, 4); await sleep(450); break; }
-    case 'recruit': { if (e._me === false) break; SFX.summon(heroTier(e.hero)); const col = heroColor(e.hero); banner(e.hero, HEROES[e.hero].name + ' присоединяется', e.full ? 'Рука полна: выбери, кого отпустить' : 'Душа побеждена и забрана', col); burst(screenOfP(e.p), [col, '#FFFFFF'], 36, 6, { shape: 'star' }); await sleep(1100); break; }
+     case 'recruit': { if (e._me === false) break; SFX.summon(heroTier(e.hero)); const col = heroColor(e.hero); banner(e.hero, HEROES[e.hero].name + ' присоединяется', e.full ? 'Рука полна: выбери, кого отпустить' : 'Душа побеждена и забрана', col); heroSignatureFx(e.hero, screenOfP(e.p), HEROES[e.hero].great ? 1.35 : 0.8); motifSnd(HEROES[e.hero].motif || 'star'); await sleep(1100); animateHeroArrival(e.hero); break; }
     case 'status': floatAt(e.p, e.msg, '#C9BFE3'); await sleep(450); break;
     case 'auraTick': floatAt(e.p, '✦ +' + e.amount, '#F3DDA0'); spiral(screenOfP(e.p), ['#F3DDA0', '#FFFFFF'], 16); await sleep(500); break;
-    case 'takeHero': { if (e._me === false) { beam(screenOfP(e.from), screenOfP(e.p), '#C9B0FF', 3, 20); await sleep(300); break; } const col = heroColor(e.hero); beam(screenOfP(e.from), screenOfP(e.p), col, 4, 30); banner(e.hero, HEROES[e.hero].name + ' вырван из руки', P(e.from).name + ' → ' + P(e.p).name, col); await sleep(1100); break; }
+     case 'takeHero': { if (e._me === false) { beam(screenOfP(e.from), screenOfP(e.p), '#C9B0FF', 3, 20); await sleep(300); break; } const col = heroColor(e.hero); beam(screenOfP(e.from), screenOfP(e.p), col, 4, 30); banner(e.hero, HEROES[e.hero].name + ' вырван из руки', P(e.from).name + ' → ' + P(e.p).name, col); await sleep(1100); animateHeroArrival(e.hero); break; }
     case 'shuffle': SFX.ab.swap(); banner('marrek', 'Карты перетасованы', 'Руки всех игроков перемешаны', '#E5484D'); await sleep(1200); break;
     case 'orbit': { for (const m of e.moves) { const a = screenOfP(m.p); G.disp[m.p] = m.to; renderTokens(); const b = screenOfP(m.p); beam(a, b, '#C9B0FF', 3, 30); } SFX.ab.gravity(); await sleep(900); break; }
     case 'poisonTick': floatAt(e.p, '−' + e.amount + ' (яд)', '#7BE0A4'); motifFx(screenOfP(e.p), '#3FBF7F', 'smoke', 14); await sleep(600); break;
@@ -4656,7 +4714,7 @@ async function playFx(e, s) {
       const p = P(e.p); const H = HEROES[e.hero]; const ab = H.ab.find(x => x.id === e.ab); const t = e.target ? P(e.target) : null;
       if (e._me === false) { // чужое дело: только короткий эффект на поле
         const c = screenOfP(p.id), tp = t ? screenOfP(t.id) : null; const all = s.players.filter(q => q.id !== p.id && !q.place).map(q => screenOfP(q.id));
-        if (ABV[e.ab]) ABV[e.ab](c, tp, all); else genericFx(e.hero, ab, c, tp, all);
+        if (ABV[e.ab]) { ABV[e.ab](c, tp, all); heroSignatureFx(e.hero, tp || c, 0.55); } else genericFx(e.hero, ab, c, tp, all);
         await sleep(450); break;
       }
       await castCard(e.hero, ab.name, p.name + (t && t.id !== p.id ? ' против ' + t.name : ''), e.copy, ab.face);
@@ -4665,7 +4723,7 @@ async function playFx(e, s) {
       abilitySound(e.hero, ab);
       const c = screenOfP(p.id), tp = t ? screenOfP(t.id) : null;
       const all = s.players.filter(q => q.id !== p.id && !q.place).map(q => screenOfP(q.id));
-      if (ABV[e.ab]) ABV[e.ab](c, tp, all); else genericFx(e.hero, ab, c, tp, all);
+       if (ABV[e.ab]) { ABV[e.ab](c, tp, all); heroSignatureFx(e.hero, tp || c, 0.75); } else genericFx(e.hero, ab, c, tp, all);
       renderDock();
       await sleep(850); break;
     }
@@ -4679,8 +4737,8 @@ async function playFx(e, s) {
     case 'steal': floatAt(e.from, '−' + e.amount, '#FF8A96'); floatAt(e.p, '+' + e.amount, '#8FE3FF'); SFX.coin(); await sleep(600); break;
     case 'swap': { const a = screenOfP(e.a), b = screenOfP(e.b); beam(a, b, '#C9B0FF', 4); beam(b, a, '#C9B0FF', 4); G.disp[e.a] = e.pa; G.disp[e.b] = e.pb; renderTokens(); await sleep(350); focusCell(e.pa); await sleep(450); break; }
     case 'burnHero': { if (e._me === false) { burst(screenOfP(e.p), ['#FF7A50', '#FFD27A'], 16, 4, { g: -0.06 }); await sleep(300); break; } const pl = P(e.p); SFX.burn(); banner(e.hero, HEROES[e.hero].name + (e.verb ? ' ' + e.verb : ' сгорает'), 'У игрока ' + pl.name + (e.why ? ', ' + e.why : ''), '#FF7A50'); burst(screenOfP(e.p), ['#FF7A50', '#FFD27A'], 30, 6, { g: -0.06 }); await sleep(900); break; }
-    case 'revive': if (e._me === false) break; SFX.ab.revive(); banner(e.hero, HEROES[e.hero].name + ' возвращается', P(e.p).name, '#FF9AC8'); pillar(screenOfP(e.p), '#FF9AC8'); await sleep(900); break;
-    case 'summon': await showSummon(e, s); break;
+     case 'revive': if (e._me === false) break; SFX.ab.revive(); banner(e.hero, HEROES[e.hero].name + ' возвращается', P(e.p).name, heroColor(e.hero)); heroSignatureFx(e.hero, screenOfP(e.p), 0.9); await sleep(900); animateHeroArrival(e.hero); break;
+     case 'summon': await showSummon(e, s); if (e._me !== false) animateHeroArrival(e.hero); break;
     case 'skip': SFX.skip(); floatAt(e.p, 'Пропуск хода', '#C9BFE3'); burst(screenOfP(e.p), '#3FBF7F', 16, 3); await sleep(850); break;
     case 'markTick': floatAt(e.p, '−' + e.amount + ' (метка)', '#B58CFF'); ringIn(screenOfP(e.p), '#B58CFF', 60, 30); await sleep(600); break;
     case 'camp': SFX.coin(); floatAt(e.p, '−' + e.amount + ' (лагерь)', '#FFB86B'); await sleep(600); break;
@@ -4730,7 +4788,7 @@ function renderDock() {
   else if (zc === 1) au.appendChild(h('div', { class: 'auraline l0' }, h('span', null, 'Собери в руке второй знак зодиака, чтобы зажечь созвездие.')));
   famActive(v).forEach(f => { const F = FAMS[f], l = famLv(v, f), n = famCount(v, f); au.appendChild(h('div', { class: 'auraline fam f' + l, style: '--fc:' + F.col }, h('b', null, '⚜ ' + F.name + ': ' + n + ' души'), h('span', null, scl(F.lv[l - 1])))); });
   const hand = $('hand'); const handN = []; hand.className = HAND > 4 ? 'h' + HAND : '';
-  { const mini = dockMini(); $('dock').classList.toggle('mini', mini); $('bMini').textContent = mini ? '▴ показать карты' : '▾ скрыть карты'; $('bMini').setAttribute('aria-label', mini ? 'Показать карты' : 'Скрыть карты'); }
+   { const mini = dockMini(); $('dock').classList.toggle('mini', mini); $('bMini').textContent = mini ? '▴ показать карты' : '▾ скрыть карты'; $('bMini').setAttribute('aria-label', mini ? 'Показать карты' : 'Скрыть карты'); $('bMini').setAttribute('aria-expanded', String(!mini)); }
   for (let i = 0; i < HAND; i++) {
     const hh = v.hand[i];
     if (!hh) { handN.push(h('div', { class: 'hslot' }, i === 0 && !v.hand.length ? 'Призови первого героя' : 'Пусто')); continue; }
@@ -4738,7 +4796,7 @@ function renderDock() {
     const fk = FAM_OF[hh.k]; const fl = fk ? famLv(v, fk) : 0;
     const lockedC = hh.lock > 0 || hh.mute || (v.st.shadowMark && FAM_OF[hh.k] === 'shadows');
     const lf = hh.mute ? 'mute' : hh.lock > 0 ? (hh.lock > 100 ? 'crystal' : hh.lockFx || 'chain') : 'shadow';
-    handN.push(h('button', { class: 'hcard' + (lockedC ? ' locked lf-' + lf : '') + (H.great ? ' great' : '') + (z && lvl ? ' zaura l' + lvl : '') + (fl ? ' faura' : ''), style: '--hc:' + heroColor(hh.k) + (fk ? ';--fc:' + FAMS[fk].col : ''), 'aria-label': H.name, onclick: () => { const vv = viewer(), x = vv && vv.hand[i]; if (x) cardSheet(vv, x); } },
+     handN.push(h('button', { class: 'hcard m-' + (H.motif || 'star') + (lockedC ? ' locked lf-' + lf : '') + (H.great ? ' great' : '') + (z && lvl ? ' zaura l' + lvl : '') + (fl ? ' faura' : ''), 'data-hk': hh.k, style: '--hc:' + heroColor(hh.k) + (fk ? ';--fc:' + FAMS[fk].col : ''), 'aria-label': H.name, onclick: () => { const vv = viewer(), x = vv && vv.hand[i]; if (x) cardSheet(vv, x); } },
       h('img', { src: IMG[hh.k].card, alt: '' }), h('span', { class: 'pw' }, '⚔ ' + pw), H.rank ? h('span', { class: 'rk', title: 'Класс ' + H.rank }, H.rank) : null, z ? h('span', { class: 'zs' }, z) : null, H.faces ? h('span', { class: 'flipb' }, '⇄') : null, !z && FAM_OF[hh.k] ? h('span', { class: 'fs', title: FAMS[FAM_OF[hh.k]].name }) : null, h('span', { class: 'nm' }, H.name), lockedC ? h('span', { class: 'lk ' + lf }, h('b', null, LOCK_ICON[lf] || '🔒'), hh.lock > 0 && hh.lock < 100 ? h('small', null, hh.lock + ' кр.') : null) : null));
   }
   syncKids(hand, handN);
@@ -4752,6 +4810,14 @@ function renderDock() {
   if (G.mode === 'online' && NET.isHost && s.status === 'playing' && a.id !== NET.myId && !a.bot && !G.playing && !G.busy)
     ex.appendChild(h('button', { class: 'abtn alt', id: 'hostskip', onclick: () => confirmBox('Пропустить ход?', 'Если ' + a.name + ' не отвечает, можно пропустить его ход.', 'Пропустить', () => doAct({ type: 'forceSkip', by: NET.myId })) }, 'Пропустить ход игрока ' + a.name));
   setDockVar();
+}
+function animateHeroArrival(k) {
+  renderDock();
+  const cards = Array.from($('hand').querySelectorAll('.hcard'));
+  const card = cards.filter(c => c.dataset.hk === k).pop();
+  if (!card) return;
+  card.classList.remove('arrive'); void card.offsetWidth; card.classList.add('arrive');
+  setTimeout(() => card.classList.remove('arrive'), 900);
 }
 $('bDice').onclick = () => { SFX.click(); doAct({ type: 'roll' }); };
 $('bMini').onclick = () => { SFX.click(); const s = G.s; const me = s && s.players.find(x => x.id === meId()); const myTurn = s && me && activeP(s).id === me.id; if (store.get('autoMini', false) && !myTurn && !store.get('dockMini', false)) { store.set('autoMini', false); } else store.set('dockMini', !store.get('dockMini', false)); renderDock(); };
