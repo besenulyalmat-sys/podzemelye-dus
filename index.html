@@ -647,6 +647,12 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .tile.portal.stone-v2 .tile-face::after,.tile.altar.stone-v2 .tile-face::after{background-image:linear-gradient(148deg,transparent 0 48%,rgba(173,239,255,.55) 48.5%,rgba(11,37,58,.75) 49.3%,transparent 50%),radial-gradient(circle at 78% 75%,rgba(220,249,255,.65) 0 1px,transparent 2px)}
 .tile.portal.stone-v3 .tile-face::after,.tile.altar.stone-v3 .tile-face::after{background-image:linear-gradient(18deg,transparent 0 35%,rgba(173,239,255,.55) 35.5%,rgba(11,37,58,.75) 36.3%,transparent 37%),radial-gradient(circle at 25% 73%,rgba(220,249,255,.65) 0 1px,transparent 2px)}
 @media (prefers-reduced-motion:reduce){.tile-glyph{transition:none}}
+/* MATERIAL ATLAS V2 */
+.tile-face::before{background-image:url('assets/textures/dungeon/tile-materials-v2.png');background-repeat:no-repeat;background-size:500% auto;background-position:var(--material-x,0%) var(--material-y,41%);opacity:1;mix-blend-mode:normal}
+.stone-v0 .tile-face::before{--material-y:38%}.stone-v1 .tile-face::before{--material-y:40%}.stone-v2 .tile-face::before{--material-y:42%}.stone-v3 .tile-face::before{--material-y:44%}.stone-v4 .tile-face::before{--material-y:46%}.stone-v5 .tile-face::before{--material-y:48%}
+.tile.zone-stone .tile-face::before{--material-x:0%}.tile.zone-frost .tile-face::before,.tile.zone-dream .tile-face::before{--material-x:100%}.tile.zone-blood .tile-face::before{--material-x:50%}.tile.zone-arcane .tile-face::before{--material-x:75%}
+.tile.treasure .tile-face::before{--material-x:25%}.tile.battle .tile-face::before,.tile.trap .tile-face::before,.tile.collapse .tile-face::before{--material-x:50%}.tile.omen .tile-face::before{--material-x:75%}.tile.portal .tile-face::before,.tile.altar .tile-face::before{--material-x:100%}.tile.start .tile-face::before,.tile.finish .tile-face::before{--material-x:25%}
+.tile-face::after{background-image:none!important;opacity:0!important}
 </style>
 </head>
 <body>
