@@ -808,6 +808,8 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
       <div class="seat"><span class="dot" style="background:#FFC960"></span><input id="myName" maxlength="16" placeholder="Твоё имя" aria-label="Твоё имя" autocomplete="nickname"><button class="tog" id="saveName">Готово</button></div>
       <div id="lobbyList"></div>
       <div class="row" style="margin:8px 0 14px"><button class="sbtn" id="addBot" hidden>Добавить бота</button></div>
+      <h3 class="sizeh">Мир</h3>
+      <div class="sizes cnt2" id="worldLobby"></div>
       <h3 class="sizeh">Глубина подземелья</h3>
       <div class="sizes" id="sizeLobby"></div>
       <h3 class="sizeh">Карт в руке</h3>
@@ -5769,9 +5771,13 @@ function showCityBanner() {
     h('div', { class: 'mlist' }, h('button', { class: 'mopt banner2', onclick: () => { closeModal(); doAct({ type: 'summon', banner: 1 }); } }, h('span', null, 'Баннер Нового Вавилона', h('small', null, CITY_BANNER.length + ' душ города. Шансы по классам: ' + odds)))), strip,
     h('div', { class: 'mact' }, h('button', { class: 'abtn alt', onclick: closeModal }, 'Отмена'))), { center: true });
 }
+const WORLD_CHOICES = [['dungeon', 'Подземелье снов', 'засады, твари, боссы'], ['city', 'Новый Вавилон', 'закон, стража, улица']];
+function worldPicker(box, cur, onPick) {
+  if (!box) return; box.innerHTML = '';
+  WORLD_CHOICES.forEach(([id, b, sm]) => box.appendChild(h('button', { 'aria-pressed': cur === id ? 'true' : 'false', disabled: !onPick, onclick: onPick ? () => onPick(id) : null }, h('b', null, b), h('small', null, sm))));
+}
 function renderWorldLocal() {
-  const box = $('worldLocal'); if (!box) return; box.innerHTML = ''; const cur = store.get('world', 'dungeon');
-  [['dungeon', 'Подземелье снов', 'засады, твари, боссы'], ['city', 'Новый Вавилон', 'закон, стража, улица']].forEach(([id, b, sm]) => box.appendChild(h('button', { 'aria-pressed': cur === id ? 'true' : 'false', onclick: () => { SFX.click(); store.set('world', id); renderWorldLocal(); } }, h('b', null, b), h('small', null, sm))));
+  worldPicker($('worldLocal'), store.get('world', 'dungeon'), id => { SFX.click(); store.set('world', id); renderWorldLocal(); });
 }
 function cityRulesSection(sec, P) {
   return sec('Новый Вавилон',
@@ -7698,7 +7704,7 @@ async function netCreate() {
   $('bCreate').disabled = false; initOnline();
   if (!peer) { toast('Не удалось подобрать код комнаты, попробуй ещё раз.'); return; }
   hostAttach(peer, code);
-  NET.lobby = { hostId: NET.myId, players: [{ id: NET.myId, name: myDefaultName() }], size: sizePref(), hand: handPref() };
+  NET.lobby = { hostId: NET.myId, players: [{ id: NET.myId, name: myDefaultName() }], size: sizePref(), hand: handPref(), world: worldPref() };
   renderQR();
   G.mode = 'online'; renderLobby(NET.lobby); show('lobby');
 }
@@ -7723,7 +7729,7 @@ async function resumeHost(sv) {
   if (!peer) { renderResume(); toast('Не удалось снова открыть комнату. Подожди минуту и попробуй ещё раз.'); return; }
   resetGameView(); hostAttach(peer, sv.code);
   const st = sv.s; st.fx = []; st.seq = (st.seq || 0) + 1;
-  NET.state = st; NET.lobby = { hostId: NET.myId, players: st.players.map(p => ({ id: p.id, name: p.name, bot: !!p.bot })), size: st.size };
+  NET.state = st; NET.lobby = { hostId: NET.myId, players: st.players.map(p => ({ id: p.id, name: p.name, bot: !!p.bot })), size: st.size, hand: st.handMax, world: st.cs ? 'city' : 'dungeon' };
   G.mode = 'online'; show('game'); enqueue(st);
   toast('Комната ' + sv.code + ' снова открыта. Друзья могут вернуться по той же ссылке или коду.');
 }
@@ -7773,7 +7779,7 @@ function hostOnClose(conn) {
   else if (NET.state) toast(playerName(pid) + ' отключился. Если он не вернётся, пропусти его ход.');
 }
 function hostStart(players) {
-  NET.state = newGame(players.map(p => ({ id: p.id, name: p.name, bot: !!p.bot })), { hostId: NET.myId, seq: NET.state ? NET.state.seq : 0, size: NET.state ? NET.state.size : NET.lobby.size, hand: NET.state ? NET.state.handMax : NET.lobby.hand });
+  NET.state = newGame(players.map(p => ({ id: p.id, name: p.name, bot: !!p.bot })), { hostId: NET.myId, seq: NET.state ? NET.state.seq : 0, size: NET.state ? NET.state.size : NET.lobby.size, hand: NET.state ? NET.state.handMax : NET.lobby.hand, world: NET.state ? (NET.state.cs ? 'city' : 'dungeon') : (NET.lobby.world || 'dungeon') });
   broadcast({ t: 'state', s: NET.state });
   show('game'); enqueue(NET.state);
 }
@@ -7824,6 +7830,7 @@ function renderLobby(d) {
     p.bot && host ? h('button', { class: 'rm', 'aria-label': 'Убрать бота', onclick: () => { NET.lobby.players = NET.lobby.players.filter(x => x.id !== p.id); SFX.click(); broadcastLobby(); } }, '×') : null,
     !p.bot && host && p.id !== d.hostId ? h('button', { class: 'rm', 'aria-label': 'Убрать игрока ' + p.name, onclick: () => confirmBox('Убрать игрока?', p.name + ' выйдет из комнаты и не сможет вернуться в неё.', 'Убрать', () => kickPlayer(p.id)) }, '×') : null)));
   $('addBot').hidden = !host; $('addBot').disabled = d.players.length >= MAX_PLAYERS;
+  worldPicker($('worldLobby'), d.world || 'dungeon', host ? id => { NET.lobby.world = id; store.set('world', id); SFX.click(); broadcastLobby(); } : null);
   sizePicker($('sizeLobby'), d.size || 700, host ? n => { NET.lobby.size = n; store.set('size', n); SFX.click(); broadcastLobby(); } : null);
   handPicker($('handLobby'), d.hand || 4, host ? n => { NET.lobby.hand = n; store.set('hand', n); SFX.click(); broadcastLobby(); } : null);
   $('lobbyStart').hidden = !host; $('lobbyStart').disabled = d.players.length < 2;
